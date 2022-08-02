@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-author
+      author: KonstiantynRog
+      changes:
+        - createTable:
+          tableName:  CATEGORIES
+          columns:
+            - column:
+                name: ID
+                type: bigint
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: NAME
+                type: varchar(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: DESCRIPTION
+                type: varchar(1000)
+                constraints:
+                  nullable: false
