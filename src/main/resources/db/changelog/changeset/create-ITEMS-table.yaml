@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-author
+      author: KonstiantynRog
+      changes:
+        - createTable:
+            tableName: ITEMS
+            columns:
+              - column:
+                  name: ID
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CATEGORY_ID
+                  type: integer
+                  constraints:
+                    foreignKeyName: ITEM_ID
+                    nullable: false
+              - column:
+                  name: SHORT_DESCRIPTION
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: FULL_DESCRIPTION
+                  type: varchar(2000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: IMAGE_SRC
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
