@@ -1,0 +1,16 @@
+
+server:
+  port: 9000
+
+spring:
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/estore
+    username: root
+    password: admin
+    driver-class-name: org.postgresql.Driver
