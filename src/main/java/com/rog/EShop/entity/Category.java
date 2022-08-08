@@ -1,14 +1,14 @@
 package com.rog.EShop.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 @Entity
-@Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
+@Data
+@Table(name = "CATEGORIES")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +16,6 @@ public class Category {
     private String name;
     private String description;
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "CATEGORY_ID", nullable = false)
     private Item items;
 }

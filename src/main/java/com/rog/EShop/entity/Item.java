@@ -1,15 +1,15 @@
 package com.rog.EShop.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 @Entity
-@Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
+@Data
+@Table(name = "ITEMS")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,7 +17,6 @@ public class Item {
     private String name;
     private String shortDescription;
     private String fullDescription;
-    @OneToMany(mappedBy = "ITEMS")
+    @OneToMany(mappedBy = "items")
     private List<Category> categories;
-//    private Integer category_id;
 }
