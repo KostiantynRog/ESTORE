@@ -1,5 +1,6 @@
 package com.rog.EShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,6 +18,8 @@ public class Item {
     private String name;
     private String shortDescription;
     private String fullDescription;
-    @OneToMany(mappedBy = "items")
-    private List<Category> categories;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference
+    private Category categories;
 }

@@ -22,7 +22,7 @@ public class CategoryController {
     public List<Category> getAllCategories(){
         return categoryService.findAll();
     }
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/categories/{id}")
     public Optional<Category> getCategoryById(@PathVariable Integer id){
         return categoryService.findById(id);
     }
