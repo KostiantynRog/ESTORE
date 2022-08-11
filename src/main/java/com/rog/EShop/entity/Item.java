@@ -1,10 +1,13 @@
 package com.rog.EShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,5 +24,5 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     @JsonBackReference
-    private Category categories;
+    private Category category;
 }

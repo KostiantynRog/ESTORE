@@ -14,10 +14,19 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
 
-    public Optional<Category> findById(Integer id){
+    public Optional<Category> findById(Integer id) {
         return categoryRepository.findById(id);
     }
-    public List<Category> findAll(){
+
+    public List<Category> findAll() {
         return categoryRepository.findAll();
     }
+
+    public Category save(Category category) {
+       return categoryRepository.save(category);
+    }
+
+//    public Category update(Category category) {
+//        return categoryRepository.update(category);
+//    }
 }

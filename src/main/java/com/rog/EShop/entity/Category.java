@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Setter
 @Data
 @Table(name = "CATEGORIES")
 public class Category {
@@ -19,7 +20,7 @@ public class Category {
     private Integer id;
     private String name;
     private String description;
-    @OneToMany(mappedBy = "categories")
+    @OneToMany(mappedBy = "category")
     @JsonManagedReference
     private List<Item> items;
 }
