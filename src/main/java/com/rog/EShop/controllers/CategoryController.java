@@ -2,18 +2,20 @@ package com.rog.EShop.controllers;
 
 import com.rog.EShop.entity.Category;
 import com.rog.EShop.services.CategoryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequiredArgsConstructor
+
 @RequestMapping(path = "/api")
 public class CategoryController {
     private final CategoryService categoryService;
 
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping(path = "/categories")
     public List<Category> getAllCategories() {
@@ -26,14 +28,17 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/categories")
-    public Category create(@RequestBody Category newCategory) {
-        return categoryService.save(newCategory);
+    public Category create(@RequestBody Category category) {
+        return categoryService.save(category);
     }
 
-//    @PutMapping(path = "/categories/{id}")
-//    public Category update(@PathVariable Integer id, @RequestBody Category categoryDetails){
-//       Optional<Category> category = categoryService.findById(id);
-//
-//
-//    }
+    @PutMapping(path = "/categories")
+    public Category update(@RequestBody Category category) {
+        return categoryService.update(category);
+    }
+
+    @DeleteMapping(path = "/categories/{id}")
+    public void deleteCategory(@PathVariable Integer id) {
+        categoryService.delete(id);
+    }
 }

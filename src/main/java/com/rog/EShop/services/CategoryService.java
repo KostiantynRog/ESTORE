@@ -2,16 +2,20 @@ package com.rog.EShop.services;
 
 import com.rog.EShop.entity.Category;
 import com.rog.EShop.repository.CategoryRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
-@RequiredArgsConstructor
+
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
 
     public Optional<Category> findById(Integer id) {
@@ -23,10 +27,14 @@ public class CategoryService {
     }
 
     public Category save(Category category) {
-       return categoryRepository.save(category);
+        return categoryRepository.save(category);
     }
 
-//    public Category update(Category category) {
-//        return categoryRepository.update(category);
-//    }
+    public Category update(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    public void delete(Integer id) {
+        categoryRepository.deleteById(id);
+    }
 }
