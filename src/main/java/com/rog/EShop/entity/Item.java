@@ -10,12 +10,13 @@ import java.util.Objects;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_generator")
-    @SequenceGenerator(name = "item_id_generator", sequenceName = "item_id_seq")
+    @SequenceGenerator(name = "item_id_generator", sequenceName = "item_id_seq", allocationSize = 1)
     private Integer id;
     private String name;
-    private Integer category_id;
+
     private String shortDescription;
     private String fullDescription;
+    private String image_src;
     @ManyToOne
     @JsonBackReference
     private Category category;
@@ -37,14 +38,6 @@ public class Item {
         this.name = name;
     }
 
-    public Integer getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
-    }
-
     public String getShortDescription() {
         return shortDescription;
     }
@@ -59,6 +52,14 @@ public class Item {
 
     public void setFullDescription(String fullDescription) {
         this.fullDescription = fullDescription;
+    }
+
+    public String getImage_src() {
+        return image_src;
+    }
+
+    public void setImage_src(String image_src) {
+        this.image_src = image_src;
     }
 
     public Category getCategory() {

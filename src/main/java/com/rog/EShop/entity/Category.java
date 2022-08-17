@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categories_id_generator")
-    @SequenceGenerator(name = "categories_id_generator", sequenceName = "categories_id_seq")
+    @SequenceGenerator(name = "categories_id_generator", sequenceName = "categories_id_seq", allocationSize = 1)
     private Integer id;
     private String name;
     private String description;
