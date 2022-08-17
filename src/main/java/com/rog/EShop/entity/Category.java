@@ -20,14 +20,6 @@ public class Category {
     @JsonManagedReference
     private List<Item> items;
 
-    public Category() {
-    }
-
-    public Category(Integer id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
 
     public Integer getId() {
         return id;

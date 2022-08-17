@@ -3,13 +3,24 @@ databaseChangeLog:
       id: 0.0.1
       author: KonstiantynRog
       changes:
+
+        - createSequence:
+            sequenceName: categories_id_seq
+            startValue: 1
+            incrementBy: 1
+
+        - createSequence:
+            sequenceName: items_id_seq
+            startValue: 1
+            incrementBy: 1
+
         - createTable:
             tableName: CATEGORIES
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: integer
+                  defaultValueComputed: nextval('categories_id_seq')
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -30,35 +41,35 @@ databaseChangeLog:
              - column:
                   name: id
                   type: integer
-                  autoIncrement: true
+                  defaultValueComputed: nextval('items_id_seq')
                   constraints:
                     primaryKey: true
                     nullable: false
              - column:
-                        name: name
-                        type: varchar(255)
-                        constraints:
-                          nullable: false
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
              - column:
-                        name: category_id
-                        type: integer
-                        constraints:
-                          nullable: false
+                  name: category_id
+                  type: integer
+                  constraints:
+                    nullable: false
              - column:
-                        name: short_description
-                        type: varchar(1000)
-                        constraints:
-                          nullable: false
+                  name: short_description
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
              - column:
-                        name: full_description
-                        type: varchar(2000)
-                        constraints:
-                          nullable: false
+                  name: full_description
+                  type: varchar(2000)
+                  constraints:
+                    nullable: false
              - column:
-                        name: image_src
-                        type: varchar(500)
-                        constraints:
-                          nullable: false
+                   name: image_src
+                   type: varchar(500)
+                   constraints:
+                     nullable: false
 
         - addForeignKeyConstraint:
             baseColumnNames: category_id

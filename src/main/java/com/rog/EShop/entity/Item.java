@@ -13,26 +13,13 @@ public class Item {
     @SequenceGenerator(name = "item_id_generator", sequenceName = "item_id_seq")
     private Integer id;
     private String name;
-    @Column(name = "category_id",insertable = false,updatable = false)
     private Integer category_id;
     private String shortDescription;
     private String fullDescription;
     @ManyToOne
-    @JoinColumn(nullable = false)
     @JsonBackReference
     private Category category;
 
-    public Item() {
-    }
-
-    public Item(Integer id, String name, Integer category_id, String shortDescription, String fullDescription, Category category) {
-        this.id = id;
-        this.name = name;
-        this.category_id = category_id;
-        this.shortDescription = shortDescription;
-        this.fullDescription = fullDescription;
-        this.category = category;
-    }
 
     public Integer getId() {
         return id;
