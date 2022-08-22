@@ -27,15 +27,25 @@ public class ItemController {
         return itemService.findFirst5By();
     }
 
-    @GetMapping(path = "/items")
-    public List<Item> getAllByCategoryId(@RequestParam("categoryId") Integer categoryId) {
-        return itemService.findAllByCategoryId(categoryId);
-    }
 
     @PostMapping(path = "/items")
     public Item create(@RequestBody Item item) {
+        if (item.getCategory() == null) {
+            throw new RuntimeException("A new item should have category ID");
+
+        }
+
         return itemService.save(item);
     }
+
+    @PutMapping(path = "/items")
+    public Item update(@RequestBody Item item) {
+        if (item.getId() == null) {
+            throw new RuntimeException(" Id is not present in request body");
+        }
+        return itemService.update(item);
+    }
+
 
     @DeleteMapping(path = "/items/{id}")
     public void deleteItem(@PathVariable Integer id) {

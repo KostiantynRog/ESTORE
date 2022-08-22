@@ -23,11 +23,12 @@ public class ItemService {
         return itemRepository.findFirst5By();
     }
 
-    public List<Item> findAllByCategoryId(Integer id) {
-        return itemRepository.findAllByCategoryId(id);
-    }
 
     public Item save(Item item) {
+        return itemRepository.save(item);
+    }
+
+    public Item update(Item item) {
         return itemRepository.save(item);
     }
 

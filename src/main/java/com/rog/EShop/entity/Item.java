@@ -9,14 +9,14 @@ import java.util.Objects;
 @Table(name = "ITEMS")
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_generator")
-    @SequenceGenerator(name = "item_id_generator", sequenceName = "item_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "items_id_generator")
+    @SequenceGenerator(name = "items_id_generator", sequenceName = "items_id_seq", allocationSize = 1)
     private Integer id;
     private String name;
 
     private String shortDescription;
     private String fullDescription;
-    private String image_src;
+    private String imageSrc;
     @ManyToOne
     @JsonBackReference
     private Category category;
@@ -54,12 +54,12 @@ public class Item {
         this.fullDescription = fullDescription;
     }
 
-    public String getImage_src() {
-        return image_src;
+    public String getImageSrc() {
+        return imageSrc;
     }
 
-    public void setImage_src(String image_src) {
-        this.image_src = image_src;
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 
     public Category getCategory() {

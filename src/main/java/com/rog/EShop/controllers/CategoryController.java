@@ -29,11 +29,18 @@ public class CategoryController {
 
     @PostMapping(path = "/categories")
     public Category create(@RequestBody Category category) {
+        if (category.getId() != null) {
+            throw new RuntimeException("A new category cannot already have an ID");
+        }
+
         return categoryService.save(category);
     }
 
     @PutMapping(path = "/categories")
     public Category update(@RequestBody Category category) {
+        if (category.getId() == null) {
+            throw new RuntimeException(" Id is not present in request body");
+        }
         return categoryService.update(category);
     }
 
