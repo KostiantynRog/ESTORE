@@ -18,7 +18,6 @@ public class Item {
     private String fullDescription;
     private String imageSrc;
     @ManyToOne
-    @JsonBackReference
     private Category category;
 
 

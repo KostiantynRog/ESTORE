@@ -17,7 +17,6 @@ public class Category {
     private String name;
     private String description;
     @OneToMany(mappedBy = "category")
-    @JsonManagedReference
     private List<Item> items;
 
 
