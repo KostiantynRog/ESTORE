@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 import java.util.Optional;
 
-@Mapper(componentModel = "spring", uses = Category.class)
+@Mapper( uses = Category.class)
 public interface ItemMapper {
     ItemCreateDto toDTO(Item item);
     ItemCreateDto toDTO(Optional<Item> item);
