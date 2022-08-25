@@ -1,7 +1,5 @@
 package com.rog.EShop.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -19,7 +17,6 @@ public class Item {
     private String imageSrc;
     @ManyToOne
     private Category category;
-
 
     public Integer getId() {
         return id;

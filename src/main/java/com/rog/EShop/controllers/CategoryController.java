@@ -2,9 +2,10 @@ package com.rog.EShop.controllers;
 
 import com.rog.EShop.dto.CategoryCreateDto;
 import com.rog.EShop.entity.Category;
-import com.rog.EShop.mapper.EntityMapper;
+import com.rog.EShop.mapper.CategoryMapper;
 import com.rog.EShop.services.CategoryService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,41 +16,43 @@ import java.util.Optional;
 @RequestMapping(path = "/api")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, CategoryMapper categoryMapper) {
         this.categoryService = categoryService;
+        this.categoryMapper = categoryMapper;
     }
 
     @GetMapping(path = "/categories")
     public List<CategoryCreateDto> getAllCategories() {
-       List<Category> categories = categoryService.findAll();
-        return EntityMapper.INSTANCE.toDTO( categories);
+        List<Category> categories = categoryService.findAll();
+        return categoryMapper.toDTO(categories);
     }
 
     @GetMapping(path = "/categories/{id}")
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public CategoryCreateDto getCategoryById(@PathVariable Integer id) {
-        Optional<Category> category = categoryService.findById(id);
-        return EntityMapper.INSTANCE.toDTO(category);
+        Optional<Category> categoryDTO = categoryService.findById(id);
+        return categoryMapper.toDTO(categoryDTO);
     }
 
     @PostMapping(path = "/categories")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public Category create(@RequestBody Category category) {
+    public ResponseEntity<CategoryCreateDto> create(@RequestBody Category category) {
         if (category.getId() != null) {
-            throw new RuntimeException("A new category cannot already have an ID");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        Category categoryDTO = categoryService.save(category);
+        CategoryCreateDto newCategory = categoryMapper.toDTO(categoryDTO);
+        return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
 
-        return categoryService.save(category);
     }
 
     @PutMapping(path = "/categories")
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Category update(@RequestBody Category category) {
+    public CategoryCreateDto update(@RequestBody Category category) {
         if (category.getId() == null) {
             throw new RuntimeException(" Id is not present in request body");
         }
-        return categoryService.update(category);
+        Category categoryDTO = categoryService.update(category);
+        return categoryMapper.toDTO(categoryDTO);
     }
 
     @DeleteMapping(path = "/categories/{id}")

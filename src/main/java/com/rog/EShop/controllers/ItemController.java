@@ -1,8 +1,11 @@
 package com.rog.EShop.controllers;
 
+import com.rog.EShop.dto.ItemCreateDto;
 import com.rog.EShop.entity.Item;
+import com.rog.EShop.mapper.ItemMapper;
 import com.rog.EShop.services.ItemService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,42 +16,43 @@ import java.util.Optional;
 @RequestMapping(path = "/api")
 public class ItemController {
     private final ItemService itemService;
+    private final ItemMapper itemMapper;
 
-    public ItemController(ItemService itemService) {
+    public ItemController(ItemService itemService, ItemMapper itemMapper) {
         this.itemService = itemService;
+        this.itemMapper = itemMapper;
     }
 
     @GetMapping(path = "/items/{id}")
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public Optional<Item> getItemById(@PathVariable Integer id) {
-        return itemService.findById(id);
+    public Optional<ItemCreateDto> getItemById(@PathVariable Integer id) {
+        Optional<Item> item = itemService.findById(id);
+        return Optional.ofNullable(itemMapper.toDTO(item));
     }
 
     @GetMapping(path = "/items/last")
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public List<Item> getFirst5By() {
-        return itemService.findFirst5By();
+    public List<ItemCreateDto> getFirst5By() {
+        List<Item> itemCreateDtoList = itemService.findFirst5By();
+        return itemMapper.toDTO(itemCreateDtoList);
     }
 
 
     @PostMapping(path = "/items")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public Item create(@RequestBody Item item) {
-        if (item.getCategory() == null) {
-            throw new RuntimeException("A new item should have category ID");
-
+    public ResponseEntity<ItemCreateDto> create(@RequestBody Item item) {
+        if(item.getId() != null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        return itemService.save(item);
+        Item itemDTO = itemService.save(item);
+        ItemCreateDto newItem = itemMapper.toDTO(itemDTO);
+        return new ResponseEntity<>(newItem, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/items")
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public Item update(@RequestBody Item item) {
+    public ItemCreateDto update(@RequestBody Item item) {
         if (item.getId() == null) {
             throw new RuntimeException(" Id is not present in request body");
         }
-        return itemService.update(item);
+        Item itemDTO = itemService.update(item);
+        return itemMapper.toDTO(itemDTO);
     }
 
 
