@@ -1,35 +1,43 @@
 package com.rog.EShop.services;
 
+import com.rog.EShop.dto.ItemDto;
 import com.rog.EShop.entity.Item;
+import com.rog.EShop.exceptions.NotFoundException;
+import com.rog.EShop.mapper.ItemMapper;
 import com.rog.EShop.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
+    private final ItemMapper itemMapper;
 
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
+        this.itemMapper = itemMapper;
     }
 
-    public Optional<Item> findById(Integer id) {
-        return itemRepository.findById(id);
+    public ItemDto findById(Integer id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not found"));
+        return itemMapper.toDTO(item);
     }
 
-    public List<Item> findFirst5By() {
-        return itemRepository.findFirst5By();
+    public List<ItemDto> findLast5By() {
+        List<Item> items = itemRepository.findFirst5ByOrderByIdDesc();
+        return itemMapper.toDTO(items);
     }
 
-
-    public Item save(Item item) {
-        return itemRepository.save(item);
+    public ItemDto save(Item item) {
+        Item itemDto = itemRepository.save(item);
+        return itemMapper.toDTO(itemDto);
     }
 
-    public Item update(Item item) {
-        return itemRepository.save(item);
+    public ItemDto update(Item item) {
+        Item itemDto = itemRepository.save(item);
+        return itemMapper.toDTO(itemDto);
     }
 
     public void delete(Integer id) {

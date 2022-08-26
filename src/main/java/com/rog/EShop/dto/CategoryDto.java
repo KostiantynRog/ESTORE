@@ -1,14 +1,14 @@
 package com.rog.EShop.dto;
 
 
-public class CategoryCreateDto {
+public class CategoryDto {
     private String name;
     private String description;
 
-    public CategoryCreateDto() {
+    public CategoryDto() {
     }
 
-    public CategoryCreateDto(String name, String description) {
+    public CategoryDto(String name, String description) {
         this.name = name;
         this.description = description;
     }

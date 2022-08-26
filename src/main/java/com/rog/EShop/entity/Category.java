@@ -1,7 +1,5 @@
 package com.rog.EShop.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +14,7 @@ public class Category {
     private Integer id;
     private String name;
     private String description;
-    @OneToMany(mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private List<Item> items;
 
 

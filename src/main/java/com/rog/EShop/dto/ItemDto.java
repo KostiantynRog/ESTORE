@@ -1,15 +1,15 @@
 package com.rog.EShop.dto;
 
 
-public class ItemCreateDto {
+public class ItemDto {
     private String name;
     private String shortDescription;
     private String fullDescription;
 
-    public ItemCreateDto() {
+    public ItemDto() {
     }
 
-    public ItemCreateDto(String name, String shortDescription, String fullDescription) {
+    public ItemDto(String name, String shortDescription, String fullDescription) {
         this.name = name;
         this.shortDescription = shortDescription;
         this.fullDescription = fullDescription;
