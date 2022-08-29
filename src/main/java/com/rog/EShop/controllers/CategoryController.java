@@ -31,21 +31,21 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/categories")
-    public ResponseEntity<CategoryDto> create(@RequestBody Category category) {
-        if (category.getId() != null) {
+    public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto categoryDto) {
+        if (categoryDto.getId() != null) {
             throw new BadRequestException("Id should be empty");
         }
-        CategoryDto categoryDTO = categoryService.save(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDTO);
+        CategoryDto categoryDtoNew = categoryService.save(categoryDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoNew);
 
     }
 
     @PutMapping(path = "/categories")
-    public CategoryDto update(@RequestBody Category category) {
-        if (category.getId() == null) {
+    public CategoryDto update(@RequestBody CategoryDto categoryDto) {
+        if (categoryDto.getId() == null) {
             throw new RuntimeException(" Id is not present in request body");
         }
-        return categoryService.update(category);
+        return categoryService.update(categoryDto);
     }
 
     @DeleteMapping(path = "/categories/{id}")

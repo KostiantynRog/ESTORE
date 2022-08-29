@@ -44,14 +44,16 @@ public class CategoryService {
         return categoryMapper.toDTO(categories);
     }
 
-    public CategoryDto save(Category category) {
-        Category categoryDTO = categoryRepository.save(category);
-        return categoryMapper.toDTO(categoryDTO);
+    public CategoryDto save(CategoryDto categoryDto) {
+        Category category = categoryMapper.toEntity(categoryDto);
+        Category categorySaved = categoryRepository.save(category);
+        return categoryMapper.toDTO(categorySaved);
     }
 
-    public CategoryDto update(Category category) {
-        Category categoryDto = categoryRepository.save(category);
-        return categoryMapper.toDTO(categoryDto);
+    public CategoryDto update(CategoryDto categoryDto) {
+        Category category = categoryMapper.toEntity(categoryDto);
+        Category categoryUpdated = categoryRepository.save(category);
+        return categoryMapper.toDTO(categoryUpdated);
     }
 
     public void delete(Integer id) {

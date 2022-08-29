@@ -15,7 +15,7 @@ public class Item {
     private String shortDescription;
     private String fullDescription;
     private String imageSrc;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     private Category category;
 
     public Integer getId() {

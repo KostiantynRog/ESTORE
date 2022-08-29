@@ -2,15 +2,16 @@ package com.rog.EShop.dto;
 
 
 public class CategoryDto {
+    private Integer id;
     private String name;
     private String description;
 
-    public CategoryDto() {
+    public Integer getId() {
+        return id;
     }
 
-    public CategoryDto(String name, String description) {
-        this.name = name;
-        this.description = description;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
