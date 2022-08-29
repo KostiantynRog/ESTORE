@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findFirst5ByOrderByIdDesc();
+    List<Item> findAllByCategory_Id(Integer id);
 
 }

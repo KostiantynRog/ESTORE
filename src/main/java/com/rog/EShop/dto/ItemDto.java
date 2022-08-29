@@ -2,17 +2,18 @@ package com.rog.EShop.dto;
 
 
 public class ItemDto {
+    private Integer id;
     private String name;
+    private Integer categoryId;
     private String shortDescription;
     private String fullDescription;
 
-    public ItemDto() {
+    public Integer getId() {
+        return id;
     }
 
-    public ItemDto(String name, String shortDescription, String fullDescription) {
-        this.name = name;
-        this.shortDescription = shortDescription;
-        this.fullDescription = fullDescription;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -21,6 +22,14 @@ public class ItemDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getShortDescription() {

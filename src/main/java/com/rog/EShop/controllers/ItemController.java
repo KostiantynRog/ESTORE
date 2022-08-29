@@ -1,7 +1,6 @@
 package com.rog.EShop.controllers;
 
 import com.rog.EShop.dto.ItemDto;
-import com.rog.EShop.entity.Item;
 import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.services.ItemService;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
 @RequestMapping(path = "/api")
 public class ItemController {
     private final ItemService itemService;
@@ -31,22 +29,26 @@ public class ItemController {
         return itemService.findLast5By();
     }
 
+    @GetMapping(path = "/items")
+    public List<ItemDto> getAllByCategoryId(@RequestParam("categoryId") Integer id) {
+        return itemService.findAllByCategoryId(id);
+    }
 
     @PostMapping(path = "/items")
-    public ResponseEntity<ItemDto> create(@RequestBody Item item) {
-        if (item.getId() != null) {
+    public ResponseEntity<ItemDto> create(@RequestBody ItemDto itemDto) {
+        if (itemDto.getId() != null) {
             throw new BadRequestException("Id should be empty");
         }
-        ItemDto itemDto = itemService.save(item);
-        return ResponseEntity.status(HttpStatus.CREATED).body(itemDto);
+        ItemDto itemDtoNew = itemService.save(itemDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemDtoNew);
     }
 
     @PutMapping(path = "/items")
-    public ItemDto update(@RequestBody Item item) {
-        if (item.getId() == null) {
+    public ItemDto update(@RequestBody ItemDto itemDto) {
+        if (itemDto.getId() == null) {
             throw new RuntimeException(" Id is not present in request body");
         }
-        return itemService.update(item);
+        return itemService.update(itemDto);
 
     }
 

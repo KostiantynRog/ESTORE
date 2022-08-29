@@ -29,15 +29,23 @@ public class ItemService {
         List<Item> items = itemRepository.findFirst5ByOrderByIdDesc();
         return itemMapper.toDTO(items);
     }
-
-    public ItemDto save(Item item) {
-        Item itemDto = itemRepository.save(item);
-        return itemMapper.toDTO(itemDto);
+    public List<ItemDto> findAllByCategoryId(Integer id){
+        List<Item> items = itemRepository.findAllByCategory_Id(id);
+        return itemMapper.toDTO(items);
     }
 
-    public ItemDto update(Item item) {
-        Item itemDto = itemRepository.save(item);
-        return itemMapper.toDTO(itemDto);
+    public ItemDto save(ItemDto itemDto) {
+        Item item = itemMapper.toEntity(itemDto);
+        Item itemSaved = itemRepository.save(item);
+        return itemMapper.toDTO(itemSaved);
+
+
+    }
+
+    public ItemDto update(ItemDto itemDto) {
+        Item item = itemMapper.toEntity(itemDto);
+        Item itemUpdated = itemRepository.save(item);
+        return itemMapper.toDTO(itemUpdated);
     }
 
     public void delete(Integer id) {
