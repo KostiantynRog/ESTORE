@@ -5,12 +5,15 @@ import com.rog.EShop.entity.Item;
 import com.rog.EShop.exceptions.NotFoundException;
 import com.rog.EShop.mapper.ItemMapper;
 import com.rog.EShop.repository.ItemRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ItemService {
+    private  final Logger log = LoggerFactory.getLogger(ItemService.class);
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
@@ -21,7 +24,12 @@ public class ItemService {
 
     public ItemDto findById(Integer id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Not found"));
+                .orElseThrow(
+                        () -> { NotFoundException notFoundException =  new NotFoundException("Not found");
+                           log.error("Exception occurred because of bad value for input parameter itemId: {}",
+                                   id, notFoundException);
+                            return notFoundException;
+                        });
         return itemMapper.toDTO(item);
     }
 
@@ -30,7 +38,8 @@ public class ItemService {
         return itemMapper.toDTO(items);
     }
     public List<ItemDto> findAllByCategoryId(Integer id){
-        List<Item> items = itemRepository.findAllByCategory_Id(id);
+        List<Item> items = itemRepository.findAllByCategoryId(id);
+        log.info("Getting all items in category {}", id);
         return itemMapper.toDTO(items);
     }
 

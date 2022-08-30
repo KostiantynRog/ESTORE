@@ -5,6 +5,8 @@ import com.rog.EShop.entity.Category;
 import com.rog.EShop.exceptions.NotFoundException;
 import com.rog.EShop.mapper.CategoryMapper;
 import com.rog.EShop.repository.CategoryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Service
 public class CategoryService {
+    private  final Logger log = LoggerFactory.getLogger(CategoryService.class);
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
@@ -24,7 +27,13 @@ public class CategoryService {
 
     public CategoryDto findById(Integer id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Not found"));
+                .orElseThrow(
+                        () -> {
+                            NotFoundException notFoundException = new NotFoundException("Not found");
+                            log.error("Exception occurred because of bad values for input parameter categoryId: {}",
+                                    id, notFoundException);
+                    return notFoundException;
+                });
         return categoryMapper.toDTO(category);
     }
 //    Second variant not to return Optional
