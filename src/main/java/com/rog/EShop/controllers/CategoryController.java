@@ -35,7 +35,6 @@ public class CategoryController {
     @PostMapping(path = "/categories")
     public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto categoryDto) {
         if (categoryDto.getId() != null) {
-            log.warn("There was an exception, but it was ignored");
             throw new BadRequestException("Id should be empty");
         }
         CategoryDto categoryDtoNew = categoryService.save(categoryDto);
@@ -46,8 +45,7 @@ public class CategoryController {
     @PutMapping(path = "/categories")
     public CategoryDto update(@RequestBody CategoryDto categoryDto) {
         if (categoryDto.getId() == null) {
-            log.error("Exception occurred because of bad value for input parameter categoryId: {}",
-                    categoryDto.getId());
+            log.error("CategoryId not found");
             throw new RuntimeException(" Id is not present in request body");
         }
         return categoryService.update(categoryDto);

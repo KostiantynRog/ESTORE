@@ -24,7 +24,7 @@ public class ItemController {
 
     @GetMapping(path = "/items/{id}")
     public ItemDto getItemById(@PathVariable Integer id) {
-        log.debug("Value of variable itemId - {}", id);
+        log.debug("Find item by itemId - {}", id);
         return itemService.findById(id);
     }
 
@@ -41,7 +41,6 @@ public class ItemController {
     @PostMapping(path = "/items")
     public ResponseEntity<ItemDto> create(@RequestBody ItemDto itemDto) {
         if (itemDto.getId() != null) {
-            log.warn("There was an exception, but it was ignored");
             throw new BadRequestException("Id should be empty");
         }
         ItemDto itemDtoNew = itemService.save(itemDto);
@@ -51,8 +50,7 @@ public class ItemController {
     @PutMapping(path = "/items")
     public ItemDto update(@RequestBody ItemDto itemDto) {
         if (itemDto.getId() == null) {
-            log.error("Exception occurred because of bad value for input parameter itemDtoId: {}",
-                    itemDto.getId());
+            log.error("Not found itemDtoId");
             throw new RuntimeException(" Id is not present in request body");
         }
         return itemService.update(itemDto);

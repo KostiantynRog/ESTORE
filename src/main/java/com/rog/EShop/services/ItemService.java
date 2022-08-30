@@ -25,10 +25,10 @@ public class ItemService {
     public ItemDto findById(Integer id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(
-                        () -> { NotFoundException notFoundException =  new NotFoundException("Not found");
-                           log.error("Exception occurred because of bad value for input parameter itemId: {}",
-                                   id, notFoundException);
-                            return notFoundException;
+                        () -> {
+                           log.error("Not found itemId: {}",
+                                   id);
+                            return new NotFoundException("Not found");
                         });
         return itemMapper.toDTO(item);
     }
@@ -38,8 +38,8 @@ public class ItemService {
         return itemMapper.toDTO(items);
     }
     public List<ItemDto> findAllByCategoryId(Integer id){
+        log.debug("Getting all items in category {}", id);
         List<Item> items = itemRepository.findAllByCategoryId(id);
-        log.info("Getting all items in category {}", id);
         return itemMapper.toDTO(items);
     }
 

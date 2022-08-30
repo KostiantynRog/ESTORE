@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class CategoryService {
-    private  final Logger log = LoggerFactory.getLogger(CategoryService.class);
+    private final Logger log = LoggerFactory.getLogger(CategoryService.class);
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
@@ -26,13 +26,11 @@ public class CategoryService {
 
 
     public CategoryDto findById(Integer id) {
+        log.debug("call findbyId with param: {}", id);
         Category category = categoryRepository.findById(id)
-                .orElseThrow(
-                        () -> {
-                            NotFoundException notFoundException = new NotFoundException("Not found");
-                            log.error("Exception occurred because of bad values for input parameter categoryId: {}",
-                                    id, notFoundException);
-                    return notFoundException;
+                .orElseThrow(() -> {
+                    log.error("categoryId not found: {}", id);
+                    return new NotFoundException("Not found");
                 });
         return categoryMapper.toDTO(category);
     }
