@@ -1,16 +1,21 @@
 package com.rog.EShop.controllers;
 
-import com.rog.EShop.entity.Category;
+import com.rog.EShop.dto.CategoryDto;
+import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.services.CategoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 
 @RequestMapping(path = "/api")
 public class CategoryController {
+    private final Logger log = LoggerFactory.getLogger(CategoryController.class);
     private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
@@ -18,30 +23,32 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/categories")
-    public List<Category> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         return categoryService.findAll();
     }
 
     @GetMapping(path = "/categories/{id}")
-    public Optional<Category> getCategoryById(@PathVariable Integer id) {
+    public CategoryDto getCategoryById(@PathVariable Integer id) {
         return categoryService.findById(id);
     }
 
     @PostMapping(path = "/categories")
-    public Category create(@RequestBody Category category) {
-        if (category.getId() != null) {
-            throw new RuntimeException("A new category cannot already have an ID");
+    public ResponseEntity<CategoryDto> create(@RequestBody CategoryDto categoryDto) {
+        if (categoryDto.getId() != null) {
+            throw new BadRequestException("Id should be empty");
         }
+        CategoryDto categoryDtoNew = categoryService.save(categoryDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoNew);
 
-        return categoryService.save(category);
     }
 
     @PutMapping(path = "/categories")
-    public Category update(@RequestBody Category category) {
-        if (category.getId() == null) {
+    public CategoryDto update(@RequestBody CategoryDto categoryDto) {
+        if (categoryDto.getId() == null) {
+            log.error("CategoryId not found");
             throw new RuntimeException(" Id is not present in request body");
         }
-        return categoryService.update(category);
+        return categoryService.update(categoryDto);
     }
 
     @DeleteMapping(path = "/categories/{id}")

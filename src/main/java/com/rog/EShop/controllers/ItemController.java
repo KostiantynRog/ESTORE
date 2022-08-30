@@ -1,49 +1,60 @@
 package com.rog.EShop.controllers;
 
-import com.rog.EShop.entity.Item;
+import com.rog.EShop.dto.ItemDto;
+import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.services.ItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-
 @RequestMapping(path = "/api")
 public class ItemController {
+    private  final Logger log = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
+
 
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
     }
 
     @GetMapping(path = "/items/{id}")
-    public Optional<Item> getItemById(@PathVariable Integer id) {
+    public ItemDto getItemById(@PathVariable Integer id) {
+        log.debug("Find item by itemId - {}", id);
         return itemService.findById(id);
     }
 
     @GetMapping(path = "/items/last")
-    public List<Item> getFirst5By() {
-        return itemService.findFirst5By();
+    public List<ItemDto> getLast5By() {
+        return itemService.findLast5By();
     }
 
+    @GetMapping(path = "/items")
+    public List<ItemDto> getAllByCategoryId(@RequestParam("categoryId") Integer id) {
+        return itemService.findAllByCategoryId(id);
+    }
 
     @PostMapping(path = "/items")
-    public Item create(@RequestBody Item item) {
-        if (item.getCategory() == null) {
-            throw new RuntimeException("A new item should have category ID");
-
+    public ResponseEntity<ItemDto> create(@RequestBody ItemDto itemDto) {
+        if (itemDto.getId() != null) {
+            throw new BadRequestException("Id should be empty");
         }
-
-        return itemService.save(item);
+        ItemDto itemDtoNew = itemService.save(itemDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemDtoNew);
     }
 
     @PutMapping(path = "/items")
-    public Item update(@RequestBody Item item) {
-        if (item.getId() == null) {
+    public ItemDto update(@RequestBody ItemDto itemDto) {
+        if (itemDto.getId() == null) {
+            log.error("Not found itemDtoId");
             throw new RuntimeException(" Id is not present in request body");
         }
-        return itemService.update(item);
+        return itemService.update(itemDto);
+
     }
 
 
