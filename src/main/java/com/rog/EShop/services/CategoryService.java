@@ -7,6 +7,10 @@ import com.rog.EShop.mapper.CategoryMapper;
 import com.rog.EShop.repository.CategoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,9 +50,10 @@ public class CategoryService {
 //
 //    }
 
-    public List<CategoryDto> findAll() {
-        List<Category> categories = categoryRepository.findAll();
-        return categoryMapper.toDTO(categories);
+    public List<CategoryDto> findAll(Integer pageNo, Integer pageSize, String name) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(name).descending());
+        Page<Category> categories = categoryRepository.findAll(pageable);
+        return categoryMapper.toDto(categories);
     }
 
     public CategoryDto save(CategoryDto categoryDto) {

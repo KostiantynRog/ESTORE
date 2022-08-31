@@ -23,8 +23,10 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/categories")
-    public List<CategoryDto> getAllCategories() {
-        return categoryService.findAll();
+    public List<CategoryDto> getAllCategories(@RequestParam(defaultValue = "0") Integer pageNo,
+                                              @RequestParam(defaultValue = "5") Integer pageSize,
+                                              @RequestParam(defaultValue = "name") String name) {
+        return categoryService.findAll(pageNo, pageSize, name);
     }
 
     @GetMapping(path = "/categories/{id}")

@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api")
 public class ItemController {
-    private  final Logger log = LoggerFactory.getLogger(ItemController.class);
+    private final Logger log = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
 
 
@@ -29,13 +29,16 @@ public class ItemController {
     }
 
     @GetMapping(path = "/items/last")
-    public List<ItemDto> getLast5By() {
-        return itemService.findLast5By();
+    public List<ItemDto> getLast5By(Integer pageNo, Integer pageSize) {
+        return itemService.findLast5By(pageNo, pageSize);
     }
 
     @GetMapping(path = "/items")
-    public List<ItemDto> getAllByCategoryId(@RequestParam("categoryId") Integer id) {
-        return itemService.findAllByCategoryId(id);
+    public List<ItemDto> getAllByCategoryId(@RequestParam("categoryId") Integer id,
+                                            @RequestParam(defaultValue = "0") Integer pageNo,
+                                            @RequestParam(defaultValue = "5") Integer pageSize,
+                                            @RequestParam(defaultValue = "name") String name) {
+        return itemService.findAllByCategoryId(id, pageNo, pageSize, name);
     }
 
     @PostMapping(path = "/items")

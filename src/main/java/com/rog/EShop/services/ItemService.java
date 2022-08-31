@@ -7,13 +7,18 @@ import com.rog.EShop.mapper.ItemMapper;
 import com.rog.EShop.repository.ItemRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ItemService {
-    private  final Logger log = LoggerFactory.getLogger(ItemService.class);
+    private final Logger log = LoggerFactory.getLogger(ItemService.class);
+
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
@@ -24,23 +29,24 @@ public class ItemService {
 
     public ItemDto findById(Integer id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(
-                        () -> {
-                           log.error("Not found itemId: {}",
-                                   id);
-                            return new NotFoundException("Not found");
-                        });
+                .orElseThrow(() -> {
+                    log.error("Not found itemId: {}", id);
+                    return new NotFoundException("Not found");
+                });
         return itemMapper.toDTO(item);
     }
 
-    public List<ItemDto> findLast5By() {
-        List<Item> items = itemRepository.findFirst5ByOrderByIdDesc();
-        return itemMapper.toDTO(items);
+    public List<ItemDto> findLast5By(Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Item> items = itemRepository.findFirst5ByOrderByIdDesc(pageable);
+        return itemMapper.toEntity(items);
     }
-    public List<ItemDto> findAllByCategoryId(Integer id){
+
+    public List<ItemDto> findAllByCategoryId(Integer id, Integer pageNo, Integer pageSize, String name) {
         log.debug("Getting all items in category {}", id);
-        List<Item> items = itemRepository.findAllByCategoryId(id);
-        return itemMapper.toDTO(items);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(name).ascending());
+        Page<Item> items = itemRepository.findAllByCategoryId(id, pageable);
+        return itemMapper.toEntity(items);
     }
 
     public ItemDto save(ItemDto itemDto) {
