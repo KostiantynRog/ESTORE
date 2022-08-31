@@ -50,8 +50,7 @@ public class CategoryService {
 //
 //    }
 
-    public List<CategoryDto> findAll(Integer pageNo, Integer pageSize, String name) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(name).descending());
+    public List<CategoryDto> findAll(Pageable pageable) {
         Page<Category> categories = categoryRepository.findAll(pageable);
         return categoryMapper.toDto(categories);
     }

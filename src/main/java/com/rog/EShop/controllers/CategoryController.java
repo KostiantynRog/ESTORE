@@ -5,6 +5,7 @@ import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.services.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +24,8 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/categories")
-    public List<CategoryDto> getAllCategories(@RequestParam(defaultValue = "0") Integer pageNo,
-                                              @RequestParam(defaultValue = "5") Integer pageSize,
-                                              @RequestParam(defaultValue = "name") String name) {
-        return categoryService.findAll(pageNo, pageSize, name);
+    public List<CategoryDto> getAllCategories(Pageable pageable) {
+        return categoryService.findAll(pageable);
     }
 
     @GetMapping(path = "/categories/{id}")

@@ -36,15 +36,13 @@ public class ItemService {
         return itemMapper.toDTO(item);
     }
 
-    public List<ItemDto> findLast5By(Integer pageNo, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public List<ItemDto> findLast5By( Pageable pageable) {
         Page<Item> items = itemRepository.findFirst5ByOrderByIdDesc(pageable);
         return itemMapper.toEntity(items);
     }
 
-    public List<ItemDto> findAllByCategoryId(Integer id, Integer pageNo, Integer pageSize, String name) {
+    public List<ItemDto> findAllByCategoryId(Integer id, Pageable pageable) {
         log.debug("Getting all items in category {}", id);
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(name).ascending());
         Page<Item> items = itemRepository.findAllByCategoryId(id, pageable);
         return itemMapper.toEntity(items);
     }
