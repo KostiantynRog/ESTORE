@@ -8,9 +8,7 @@ import com.rog.EShop.repository.ItemRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,15 +27,17 @@ public class ItemService {
 
     public ItemDto findById(Integer id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.error("Not found itemId: {}", id);
-                    return new NotFoundException("Not found");
-                });
+                .orElseThrow(
+                        () -> {
+                            log.error("Not found itemId: {}",
+                                    id);
+                            return new NotFoundException("Not found");
+                        });
         return itemMapper.toDTO(item);
     }
 
-    public List<ItemDto> findLast5By( Pageable pageable) {
-        Page<Item> items = itemRepository.findFirst5ByOrderByIdDesc(pageable);
+    public List<ItemDto> findAll(Pageable pageable) {
+        Page<Item> items = itemRepository.findAll(pageable);
         return itemMapper.toEntity(items);
     }
 

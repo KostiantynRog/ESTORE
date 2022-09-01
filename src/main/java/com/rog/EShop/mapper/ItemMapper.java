@@ -17,6 +17,5 @@ public interface ItemMapper {
     Item toEntity(ItemDto itemDto);
 
     List<ItemDto> toEntity(Page<Item> items);
-
-    List<ItemDto> toDTO(List<Item> items);
+    
 }

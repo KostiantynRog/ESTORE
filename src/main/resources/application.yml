@@ -4,6 +4,7 @@ server:
 logging:
   level:
     com.rog.EShop: DEBUG
+spring.jpa.open-in-view: false
 spring:
   jpa:
     show-sql: true
@@ -16,4 +17,3 @@ spring:
     username: root
     password: admin
     driver-class-name: org.postgresql.Driver
-
