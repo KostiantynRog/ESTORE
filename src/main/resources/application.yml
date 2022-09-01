@@ -1,7 +1,9 @@
 
 server:
   port: 9000
-
+logging:
+  level:
+    com.rog.EShop: DEBUG
 spring:
   jpa:
     show-sql: true
@@ -14,3 +16,4 @@ spring:
     username: root
     password: admin
     driver-class-name: org.postgresql.Driver
+

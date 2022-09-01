@@ -5,6 +5,7 @@ import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.services.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api")
 public class ItemController {
-    private  final Logger log = LoggerFactory.getLogger(ItemController.class);
+    private final Logger log = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
 
 
@@ -29,13 +30,13 @@ public class ItemController {
     }
 
     @GetMapping(path = "/items/last")
-    public List<ItemDto> getLast5By() {
-        return itemService.findLast5By();
+    public List<ItemDto> getLast5By(Pageable pageable) {
+        return itemService.findLast5By(pageable);
     }
 
     @GetMapping(path = "/items")
-    public List<ItemDto> getAllByCategoryId(@RequestParam("categoryId") Integer id) {
-        return itemService.findAllByCategoryId(id);
+    public List<ItemDto> getAllByCategoryId(@RequestParam("categoryId") Integer id, Pageable pageable) {
+        return itemService.findAllByCategoryId(id, pageable);
     }
 
     @PostMapping(path = "/items")
