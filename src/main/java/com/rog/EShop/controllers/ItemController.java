@@ -37,8 +37,8 @@ public class ItemController {
         return itemService.findAllByCategoryId(id, pageable);
     }
 
-    @GetMapping(path = "/items/all")
-    public List<ItemDto> getAllItems(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC)
+    @GetMapping(path = "/items/last")
+    public List<ItemDto> getLastItems(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC)
                                      Pageable pageable) {
         return itemService.findAll(pageable);
     }

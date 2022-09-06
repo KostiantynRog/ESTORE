@@ -4,9 +4,9 @@ server:
 logging:
   level:
     com.rog.EShop: DEBUG
-spring.jpa.open-in-view: false
 spring:
   jpa:
+    open-in-view: false
     show-sql: true
     generate-ddl: false
     hibernate:
