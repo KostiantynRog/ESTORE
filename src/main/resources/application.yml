@@ -17,3 +17,4 @@ spring:
     username: root
     password: admin
     driver-class-name: org.postgresql.Driver
+
