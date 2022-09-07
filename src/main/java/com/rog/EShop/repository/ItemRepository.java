@@ -11,8 +11,9 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
     Page<Item> findAllByCategoryId(Integer id, Pageable pageable);
-    @Query("select new com.rog.EShop.dto.StatsDto(c.name, count(i.id)) from Item i " +
-            "JOIN i.category c GROUP BY c.id")
+
+    @Query("select new com.rog.EShop.dto.StatsDto(c.name, count(i.id)) from Category c" +
+            " LEFT JOIN  c.items i group by c.id")
     List<StatsDto> getStats();
 
 }
