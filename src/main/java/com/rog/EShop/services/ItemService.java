@@ -27,12 +27,10 @@ public class ItemService {
 
     public ItemDto findById(Integer id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(
-                        () -> {
-                            log.error("Not found itemId: {}",
-                                    id);
-                            return new NotFoundException("Not found");
-                        });
+                .orElseThrow(() -> {
+                    log.error("Not found itemId: {}", id);
+                    return new NotFoundException("Not found");
+                });
         return itemMapper.toDTO(item);
     }
 
