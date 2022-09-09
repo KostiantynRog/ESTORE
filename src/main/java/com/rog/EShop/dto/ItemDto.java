@@ -8,6 +8,7 @@ public class ItemDto {
     private String shortDescription;
     private String fullDescription;
     private String imageSrc;
+    private String categoryName;
 
     public Integer getId() {
         return id;
@@ -55,5 +56,13 @@ public class ItemDto {
 
     public void setImageSrc(String imageSrc) {
         this.imageSrc = imageSrc;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

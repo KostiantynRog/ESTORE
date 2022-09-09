@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@NamedEntityGraph(name = "Item.category",
+        attributeNodes = @NamedAttributeNode("category")
+)
 @Table(name = "ITEMS")
 public class Item {
     @Id
@@ -15,7 +18,7 @@ public class Item {
     private String shortDescription;
     private String fullDescription;
     private String imageSrc;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
     public Integer getId() {

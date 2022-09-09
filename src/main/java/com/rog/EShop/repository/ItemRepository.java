@@ -4,6 +4,7 @@ import com.rog.EShop.dto.StatsDto;
 import com.rog.EShop.entity.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,12 +17,13 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
             " LEFT JOIN  c.items i group by c.id")
     List<StatsDto> getStats();
 
-//    @Query("select i from Item i where lower(i.name) like lower(concat('%', :filter, '%') ) ")
+//    @Query("select i from Item i left join fetch i.category where lower(i.name) like lower(concat('%', :filter, '%') ) ")
 //    List<Item> findByName(String filter);
 
 //    @Query(value = "select * from items i where lower(i.name) like lower(concat('%', :filter, '%') )", nativeQuery = true)
 //    List<Item> findByName(String filter);
-
+//    @EntityGraph(attributePaths = {"category"})
+    @EntityGraph(value = "Item.category")
     List<Item> findByNameContainingIgnoreCase(String filter);
 
 }
