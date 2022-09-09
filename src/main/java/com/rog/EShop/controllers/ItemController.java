@@ -42,6 +42,10 @@ public class ItemController {
                                      Pageable pageable) {
         return itemService.findAll(pageable);
     }
+    @GetMapping(path = "/items/search")
+    public List<ItemDto> getItemByName(@RequestParam("name") String filter){
+        return itemService.findByName(filter);
+    }
 
     @PostMapping(path = "/items")
     public ResponseEntity<ItemDto> create(@RequestBody ItemDto itemDto) {
