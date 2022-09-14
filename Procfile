@@ -1,1 +1,1 @@
-web: java -jar target/E-Shop.jar
+web: java -jar target/E-Shop-0.0.1-SNAPSHOT.jar
