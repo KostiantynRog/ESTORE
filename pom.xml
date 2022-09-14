@@ -63,6 +63,17 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<configuration>
+					<url>${env.JDBC_DATABASE_URL}</url>
+					<username>${env.JDBC_DATABASE_USERNAME}</username>
+					<password>${env.JDBC_DATABASE_PASSWORD}</password>
+					<driver>org.postgresql.Driver</driver>
+					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
