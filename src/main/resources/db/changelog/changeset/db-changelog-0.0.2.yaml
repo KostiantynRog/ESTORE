@@ -1,0 +1,80 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.2
+      author: KonstiantynRog
+      changes:
+
+        - createSequence:
+            sequenceName: user_id_seq
+            startValue: 1
+            incrementBy: 1
+
+        - createTable:
+            tableName: USERS
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  defaultValueComputed: nextval('user_id_seq')
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(256)
+              - column:
+                  name: first_name
+                  type: varchar(50)
+              - column:
+                  name: last_name
+                  type: varchar(50)
+              - column:
+                  name: register_date
+                  type: timestamp with time zone
+                  defaultValueDate: current_timestamp
+              - column:
+                  name: account_non_expired
+                  type: boolean
+                  defaultValue: "true"
+              - column:
+                  name: account_non_locked
+                  type: boolean
+                  defaultValue: "true"
+              - column:
+                  name: credentials_non_expired
+                  type: boolean
+                  defaultValue: "true"
+              - column:
+                  name: enabled
+                  type: boolean
+                  defaultValue: "true"
+
+
+        - createTable:
+            tableName: USERS_ROLES
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(50)
+
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: USERS_ROLES
+            constraintName: USERS_ROLES_constraint
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: USERS
+            validate: true

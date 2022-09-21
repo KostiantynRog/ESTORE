@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.3
+      author: KonstiantynRog
+      changes:
+        - sql:
+            sql: insert into USERS(username, password, first_name, last_name, register_date, account_non_expired, account_non_locked, credentials_non_expired, enabled)
+                  values('admin', 'admin', 'admin', 'admin', '2022-9-15 00:00:00 +00:00' , 'true', 'true', 'true', 'true'),
+                        ('user', 'user', 'user', 'user', '2022-9-15 01:00:00 +00:00', 'true', 'true', 'true', 'true');
+        - sql:
+            sql: insert into USERS_ROLES(user_id, role)
+                 values((select id from USERS where username='admin'), 'ROLE_ADMIN'),
+                       ((select id from USERS where username='user'), 'ROLE_USER');
+      rollback:
+        - sql:
+            sql: delete from USERS_ROLES;
+        - sql:
+            sql: delete from USERS;
