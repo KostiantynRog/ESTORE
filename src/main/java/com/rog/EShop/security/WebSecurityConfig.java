@@ -14,7 +14,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
                         .antMatchers("/**").permitAll()
                         .anyRequest().authenticated()
@@ -23,14 +23,4 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("*");
-            }
-        };
-    }
 }

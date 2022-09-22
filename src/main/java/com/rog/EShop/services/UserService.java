@@ -41,6 +41,7 @@ public class UserService {
             throw new BadRequestException("Password does not match!");
         }
         String encode = bCryptPasswordEncoder.encode(userRegisterDto.getPassword());
+        user.setPassword(encode);
         User userSaved = userRepository.save(user);
         return userMapper.toDTO(userSaved);
 
