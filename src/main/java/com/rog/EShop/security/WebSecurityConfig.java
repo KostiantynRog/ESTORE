@@ -14,14 +14,15 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http
                 .authorizeHttpRequests((requests) -> requests
-                        .antMatchers("/").permitAll()
+                        .antMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
         return http.build();
     }
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

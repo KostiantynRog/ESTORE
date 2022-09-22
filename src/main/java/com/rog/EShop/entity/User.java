@@ -15,7 +15,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_generator")
     @SequenceGenerator(name = "users_id_generator", sequenceName = "user_id_seq", allocationSize = 1)
     private Long id;
-    private String userName;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;
@@ -32,13 +32,13 @@ public class User implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getUserName() {
-        return userName;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
@@ -109,10 +109,7 @@ public class User implements UserDetails {
         return password;
     }
 
-    @Override
-    public String getUsername() {
-        return null;
-    }
+
 
     @Override
     public boolean isAccountNonExpired() {

@@ -14,12 +14,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/users/{id}")
     public UserDto getUser(@PathVariable Long id) {
         return userService.findById(id);
     }
 
-    @PostMapping("/api/users/register")
+    @PostMapping("/users/register")
     public UserDto registerUser(@RequestBody UserRegisterDto userRegisterDto) {
         return userService.save(userRegisterDto);
     }
