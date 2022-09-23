@@ -24,35 +24,52 @@ databaseChangeLog:
                   type: varchar(50)
                   constraints:
                     unique: true
+                    nullable: false
               - column:
                   name: password
                   type: varchar(256)
+                  constraints:
+                    nullable: false
               - column:
                   name: first_name
                   type: varchar(50)
+                  constraints:
+                    nullable: false
               - column:
                   name: last_name
                   type: varchar(50)
+                  constraints:
+                    nullable: false
               - column:
                   name: register_date
                   type: timestamp with time zone
                   defaultValueDate: current_timestamp
+                  constraints:
+                    nullable: false
               - column:
                   name: account_non_expired
                   type: boolean
                   defaultValue: "true"
+                  constraints:
+                    nullable: false
               - column:
                   name: account_non_locked
                   type: boolean
                   defaultValue: "true"
+                  constraints:
+                    nullable: false
               - column:
                   name: credentials_non_expired
                   type: boolean
                   defaultValue: "true"
+                  constraints:
+                    nullable: false
               - column:
                   name: enabled
                   type: boolean
                   defaultValue: "true"
+                  constraints:
+                    nullable: false
 
 
         - createTable:
@@ -66,6 +83,8 @@ databaseChangeLog:
               - column:
                   name: role
                   type: varchar(50)
+                  constraints:
+                    nullable: false
 
         - addForeignKeyConstraint:
             baseColumnNames: user_id

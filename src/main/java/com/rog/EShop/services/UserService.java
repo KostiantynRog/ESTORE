@@ -8,11 +8,16 @@ import com.rog.EShop.exceptions.ConflictException;
 import com.rog.EShop.exceptions.NotFoundException;
 import com.rog.EShop.mapper.UserMapper;
 import com.rog.EShop.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -37,13 +42,21 @@ public class UserService {
             throw new ConflictException("This username already exists!");
         }
 
-        if (!(userRegisterDto.getPassword().equals(userRegisterDto.getConfirmPassword()))) {
+        if (!Objects.equals(userRegisterDto.getPassword(), userRegisterDto.getConfirmPassword())) {
             throw new BadRequestException("Password does not match!");
         }
         String encode = bCryptPasswordEncoder.encode(userRegisterDto.getPassword());
         user.setPassword(encode);
         User userSaved = userRepository.save(user);
         return userMapper.toDTO(userSaved);
+
+
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("The user " + username + " does not exist"));
 
 
     }

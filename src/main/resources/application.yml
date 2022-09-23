@@ -13,7 +13,7 @@ spring:
       ddl-auto: none
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
   datasource:
-    url:  ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/e-store}
+    url:  ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/e-store2}
     username: ${JDBC_DATABASE_USERNAME:root}
     password: ${JDBC_DATABASE_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
