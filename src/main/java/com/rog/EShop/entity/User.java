@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
@@ -20,11 +21,19 @@ public class User implements UserDetails {
     private String password;
     private String firstName;
     private String lastName;
-    private Date registerDate;
+    private LocalDateTime registerDate;
     private Boolean accountNonExpired;
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
     private Boolean enabled;
+
+    public void setRegisterDate(LocalDateTime registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public LocalDateTime getRegisterDate() {
+        return registerDate;
+    }
 
     public Long getId() {
         return id;
@@ -58,13 +67,7 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public Date getRegisterDate() {
-        return registerDate;
-    }
 
-    public void setRegisterDate(Date registerDate) {
-        this.registerDate = registerDate;
-    }
 
     public Boolean getAccountNonExpired() {
         return accountNonExpired;

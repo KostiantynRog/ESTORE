@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -47,6 +48,11 @@ public class UserService implements UserDetailsService {
         }
         String encode = bCryptPasswordEncoder.encode(userRegisterDto.getPassword());
         user.setPassword(encode);
+        user.setRegisterDate(LocalDateTime.now());
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
         User userSaved = userRepository.save(user);
         return userMapper.toDTO(userSaved);
 
