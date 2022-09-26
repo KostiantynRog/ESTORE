@@ -63,11 +63,11 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-//    public List<ItemDto> findByName(String filter){
+    //    public List<ItemDto> findByName(String filter){
 //        List<Item> items = itemRepository.findByName(filter);
 //        return itemMapper.toEntity(items);
 //    }
-    public List<ItemDto> findByName(String filter){
+    public List<ItemDto> findByName(String filter) {
         List<Item> items = itemRepository.findByNameContainingIgnoreCase(filter);
         return itemMapper.toEntity(items);
     }
