@@ -2,6 +2,7 @@ package com.rog.EShop.services;
 
 import com.rog.EShop.dto.UserDto;
 import com.rog.EShop.dto.UserRegisterDto;
+import com.rog.EShop.entity.Role;
 import com.rog.EShop.entity.User;
 import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.exceptions.ConflictException;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -53,6 +55,7 @@ public class UserService implements UserDetailsService {
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
+        user.setAuthorities(List.of(Role.ROLE_USER));
         User userSaved = userRepository.save(user);
         return userMapper.toDTO(userSaved);
 
