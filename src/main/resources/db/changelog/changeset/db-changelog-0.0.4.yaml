@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      author: KonstiantynRog
+      id: 0.0.4
+      changes:
+
+        - createSequence:
+            sequenceName: roles_id_seq
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: ROLES
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  defaultValueComputed: nextval('roles_id_seq')
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+
+        - sql:
+            sql: insert into ROLES(name)
+              values ('ROLE_ADMIN'),
+              ('ROLE_USER');
+
+        - addColumn:
+            tableName: USERS_ROLES
+            columns:
+            - column:
+                name: role_id
+                type: bigint
+
+        - sql:
+            sql: update USERS_ROLES ur set role_id=(select id from ROLES where name=ur.role);
+
+        - addForeignKeyConstraint:
+            baseTableName: USERS_ROLES
+            baseTableCatalogName: e-store
+            baseColumnNames: role_id
+            constraintName: ROLES-constraint
+            deferrable: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: ROLES
+            validate: true
+
+
+  - changeSet:
+      author: KonstiantynRog
+      id: 0.0.5
+      changes:
+        -  dropColumn:
+            columnName:  role
+            tableName:  USERS_ROLES
