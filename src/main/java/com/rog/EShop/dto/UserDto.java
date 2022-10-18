@@ -1,6 +1,9 @@
 package com.rog.EShop.dto;
 
+import com.rog.EShop.entity.Role;
+
 import java.util.Date;
+import java.util.List;
 
 public class UserDto {
     private Long id;
@@ -12,6 +15,15 @@ public class UserDto {
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
     private Boolean enabled;
+    private List<Role> authorities;
+
+    public List<Role> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Role> authorities) {
+        this.authorities = authorities;
+    }
 
     public Long getId() {
         return id;
@@ -28,7 +40,6 @@ public class UserDto {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
 
     public String getFirstName() {

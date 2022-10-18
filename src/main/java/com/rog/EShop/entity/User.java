@@ -1,18 +1,17 @@
 package com.rog.EShop.entity;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "USERS")
-public class User implements UserDetails {
+public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_id_generator")
     @SequenceGenerator(name = "users_id_generator", sequenceName = "user_id_seq", allocationSize = 1)
@@ -26,6 +25,16 @@ public class User implements UserDetails {
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
     private Boolean enabled;
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private List<Role> roles;
+
+
+    public void setAuthorities(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public void setRegisterDate(LocalDateTime registerDate) {
         this.registerDate = registerDate;
@@ -68,7 +77,6 @@ public class User implements UserDetails {
     }
 
 
-
     public Boolean getAccountNonExpired() {
         return accountNonExpired;
     }
@@ -102,8 +110,8 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public Collection<Role> getAuthorities() {
+        return roles;
     }
 
     @Override
