@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,7 @@ public class StatsController {
     public StatsController(StatsService statsService) {
         this.statsService = statsService;
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(path = "/stats")
     public List<StatsDto> statsDtoList() {
