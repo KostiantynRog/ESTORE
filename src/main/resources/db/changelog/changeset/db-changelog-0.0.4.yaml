@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.2
+      author: KonstiantynRog
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: keycloak_id
+                  type: bigint
