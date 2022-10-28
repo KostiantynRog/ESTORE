@@ -4,15 +4,18 @@ import com.rog.EShop.dto.KeycloakUserDto;
 import com.rog.EShop.dto.TokenDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @RestController
+@RequestMapping(path = "/api")
 public class KeycloakController {
     WebClient webClient = WebClient.create("http://localhost:8080");
-
+    @PostMapping("/token")
     public Mono<TokenDto> getToken(@RequestBody TokenDto tokenDto) {
         return webClient.post()
                 .uri("/realms/ESTORE/protocol/openid-connect/token")
