@@ -1,10 +1,15 @@
 package com.rog.EShop.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TokenDto {
     private String username;
     private String password;
+    @JsonProperty("client_id")
     private String clientId;
+    @JsonProperty("client_secret")
     private String clientSecret;
+    @JsonProperty("grant_type")
     private String grantType;
 
     public String getUsername() {

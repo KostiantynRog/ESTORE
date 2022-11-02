@@ -10,11 +10,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -36,7 +35,7 @@ class KeycloakControllerTest {
         tokenDto.setClientId("estore-api");
         tokenDto.setClientSecret("2iwoTq3NgMMj0CRHIjzWbZ7GRLj5mLEk");
         tokenDto.setGrantType("password");
-        this.mockMvc.perform(post("http://api/token").param(String.valueOf(tokenDto)))
+        this.mockMvc.perform(post("http://localhost:9000/api/token").param(tokenDto.getUsername()))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("access_token").isNotEmpty());
