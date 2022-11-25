@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.5
+      author: KonstiantynRog
+      changes:
+        - dropColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: account_non_expired
+              - column:
+                  name: account_non_locked
+              - column:
+                  name: credentials_non_expired
+              - column:
+                  name: enabled
+        - dropTable:
+            cascadeConstraints: true
+            tableName: users_roles
+  - changeSet:
+      id: 0.0.6
+      author: KostiantynRog
+      changes:
+        - dropColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: password

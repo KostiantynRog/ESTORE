@@ -41,7 +41,7 @@ public class KeycloakController {
         return webClient.post()
                 .uri("/admin/realms/ESTORE/users")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, headers.getFirst(HttpHeaders.AUTHORIZATION))
+                .header(HttpHeaders.AUTHORIZATION, headers.getFirst(HttpHeaders.AUTHORIZATION.toLowerCase()))
                 .body(Mono.just(keycloakUserDto), KeycloakUserDto.class)
                 .retrieve()
                 .bodyToMono(String.class);
