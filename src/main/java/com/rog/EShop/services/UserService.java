@@ -17,8 +17,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
+import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -104,10 +107,9 @@ public class UserService {
         List<ResponseKeycloakDto> responseKeycloakDto1 = responseKeycloakDto.getBody();
         user.setKeycloakId(responseKeycloakDto1.get(0).getId());
         Long timeStamp = responseKeycloakDto1.get(0).getCreatedTimestamp();
-        Date date = Date.from(Instant.ofEpochSecond(timeStamp));
-        LocalDateTime dateTime = LocalDateTime.ofInstant(date.toInstant(),
-                ZoneId.systemDefault());
-        user.setRegisterDate(dateTime);
+        Instant instant = Instant.ofEpochMilli(timeStamp);
+        LocalDateTime localDate = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+        user.setRegisterDate(localDate);
         User user2 = userRepository.save(user);
         return userMapper.toDTO(user2);
     }
