@@ -1,13 +1,7 @@
 package com.rog.EShop.entity;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -20,24 +14,11 @@ public class User {
     private Long id;
     private UUID keycloakId;
     private String username;
-//    private String email;
-//    private String password;
+    private String email;
     private String firstName;
     private String lastName;
-
-//    private OffsetDateTime registerDate;
     private LocalDateTime registerDate;
 
-//    @ElementCollection(targetClass = Role.class)
-//    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
-//    @Column(name = "role")
-//    @Enumerated(EnumType.STRING)
-//    private List<Role> roles;
-
-
-//    public void setAuthorities(List<Role> roles) {
-//        this.roles = roles;
-//    }
 
     public void setRegisterDate(LocalDateTime registerDate) {
         this.registerDate = registerDate;
@@ -46,7 +27,6 @@ public class User {
     public LocalDateTime getRegisterDate() {
         return registerDate;
     }
-
 
 
     public Long getId() {
@@ -73,9 +53,6 @@ public class User {
         this.username = username;
     }
 
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
 
     public String getFirstName() {
         return firstName;
@@ -93,17 +70,13 @@ public class User {
         this.lastName = lastName;
     }
 
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
+    public String getEmail() {
+        return email;
+    }
 
-//    public String getPassword() {
-//        return password;
-//    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 
     @Override

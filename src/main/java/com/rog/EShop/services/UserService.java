@@ -7,6 +7,7 @@ import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.exceptions.ConflictException;
 import com.rog.EShop.exceptions.NotFoundException;
 import com.rog.EShop.mapper.UserMapper;
+import com.rog.EShop.properties.KeycloakProperties;
 import com.rog.EShop.repository.UserRepository;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -27,12 +28,14 @@ import java.util.Objects;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private static KeycloakProperties keycloakProperties;
 
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper,
+                       KeycloakProperties keycloakProperties) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-
+        this.keycloakProperties = keycloakProperties;
     }
 
     public UserDto findById(Long id) {
@@ -53,28 +56,28 @@ public class UserService {
             throw new BadRequestException("Password does not match!");
         }
 
-        ResponseTokenDto responseTokenDto = getResponseTokenDto();
-        ResponseEntity<String> response = getStringResponseEntity(userRegisterDto, responseTokenDto);
+        ResponseTokenDto responseTokenDto = getTokenFromKeycloak();
+        ResponseEntity<String> response = getResponseFromKeycloak(userRegisterDto, responseTokenDto);
         if (response.getStatusCode().isError()) {
             throw new RuntimeException("Error " + response.getStatusCode());
         }
 
-        ResponseEntity<List<ResponseKeycloakDto>> responseKeycloakDto = getListResponseEntity(userRegisterDto, responseTokenDto);
+        ResponseEntity<List<ResponseKeycloakDto>> responseKeycloakDto = getResponseKeycloakDto(userRegisterDto,
+                responseTokenDto);
 
         List<ResponseKeycloakDto> responseKeycloakDto1 = responseKeycloakDto.getBody();
         user.setKeycloakId(responseKeycloakDto1.get(0).getId());
         Long timeStamp = responseKeycloakDto1.get(0).getCreatedTimestamp();
-        Instant instant = Instant.ofEpochMilli(timeStamp);
-        LocalDateTime localDate = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
-        user.setRegisterDate(localDate);
-        User user2 = userRepository.save(user);
-        return userMapper.toDTO(user2);
-     
+        user.setRegisterDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(timeStamp), ZoneOffset.UTC));
+        userRepository.save(user);
+        return userMapper.toDTO(user);
+
     }
 
-    private static ResponseEntity<List<ResponseKeycloakDto>> getListResponseEntity(UserRegisterDto userRegisterDto, ResponseTokenDto responseTokenDto) {
+    private static ResponseEntity<List<ResponseKeycloakDto>> getResponseKeycloakDto(UserRegisterDto userRegisterDto,
+                                                                                   ResponseTokenDto responseTokenDto) {
         RestTemplate restTemplate2 = new RestTemplate();
-        String url = "http://localhost:8080/admin/realms/ESTORE/users?username={username}&exact=true";
+        String url = keycloakProperties.getHost() + "/admin/realms/ESTORE/users?username={username}&exact=true";
         HttpHeaders headers2 = new HttpHeaders();
         headers2.setBearerAuth(responseTokenDto.getAccessToken());
         Map<String, String> params = new HashMap<>();
@@ -87,7 +90,8 @@ public class UserService {
         return responseKeycloakDto;
     }
 
-    private static ResponseEntity<String> getStringResponseEntity(UserRegisterDto userRegisterDto, ResponseTokenDto responseTokenDto) {
+    private static ResponseEntity<String> getResponseFromKeycloak(UserRegisterDto userRegisterDto,
+                                                                  ResponseTokenDto responseTokenDto) {
         RestTemplate restTemplate1 = new RestTemplate();
         HttpHeaders headers1 = new HttpHeaders();
         headers1.setContentType(MediaType.APPLICATION_JSON);
@@ -96,7 +100,7 @@ public class UserService {
         keycloakUserDto.setFirstName(userRegisterDto.getFirstName());
         keycloakUserDto.setLastName(userRegisterDto.getLastName());
         keycloakUserDto.setUsername(userRegisterDto.getUsername());
-        keycloakUserDto.setEmail("user9@net.com");
+        keycloakUserDto.setEmail(userRegisterDto.getEmail());
         keycloakUserDto.setEmailVerified(true);
         keycloakUserDto.setEnabled(true);
         keycloakUserDto.setRealmRoles(List.of(Role.ROLE_USER));
@@ -107,24 +111,25 @@ public class UserService {
         keycloakUserDto.setCredentials(List.of(credential));
         HttpEntity<KeycloakUserDto> keycloakRequest = new HttpEntity<>(keycloakUserDto, headers1);
         ResponseEntity<String> response = restTemplate1
-                .postForEntity("http://localhost:8080/admin/realms/ESTORE/users", keycloakRequest,
+                .postForEntity(keycloakProperties.getHost() + "/admin/realms/ESTORE/users", keycloakRequest,
                         String.class);
         return response;
     }
 
-    private static ResponseTokenDto getResponseTokenDto() {
+    private static ResponseTokenDto getTokenFromKeycloak() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "password");
-        formData.add("client_id", "estore-api");
+        formData.add("client_id", keycloakProperties.getClientId());
         formData.add("username", "admin");
         formData.add("password", "admin");
-        formData.add("client_secret", "2iwoTq3NgMMj0CRHIjzWbZ7GRLj5mLEk");
+        formData.add("client_secret", keycloakProperties.getClientSecret());
         HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(formData, headers);
         ResponseTokenDto responseTokenDto = restTemplate
-                .postForObject("http://localhost:8080/realms/ESTORE/protocol/openid-connect/token",
+                .postForObject( keycloakProperties.getHost() +
+                                "/realms/ESTORE/protocol/openid-connect/token",
                         tokenRequest, ResponseTokenDto.class);
         return responseTokenDto;
     }
