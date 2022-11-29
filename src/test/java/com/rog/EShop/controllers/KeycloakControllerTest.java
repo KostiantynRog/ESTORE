@@ -1,6 +1,7 @@
 package com.rog.EShop.controllers;
 
 import com.rog.EShop.dto.TokenDto;
+import com.rog.EShop.properties.KeycloakProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ class KeycloakControllerTest {
     @Autowired
     private WebApplicationContext wac;
     private MockMvc mockMvc;
+    private KeycloakProperties keycloakProperties;
 
     @BeforeEach
     public void setUp() {
@@ -32,10 +34,10 @@ class KeycloakControllerTest {
         TokenDto tokenDto = new TokenDto();
         tokenDto.setUsername("user5");
         tokenDto.setPassword("user5");
-        tokenDto.setClientId("estore-api");
-        tokenDto.setClientSecret("2iwoTq3NgMMj0CRHIjzWbZ7GRLj5mLEk");
+        tokenDto.setClientId(keycloakProperties.getClientId());
+        tokenDto.setClientSecret(keycloakProperties.getClientSecret());
         tokenDto.setGrantType("password");
-        this.mockMvc.perform(post("http://localhost:9000/api/token").param(tokenDto.getUsername()))
+        this.mockMvc.perform(post("/api/token").param(tokenDto.getUsername()))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("access_token").isNotEmpty());
