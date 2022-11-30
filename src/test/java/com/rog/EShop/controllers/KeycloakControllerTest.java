@@ -37,13 +37,10 @@ class KeycloakControllerTest {
         tokenDto.setClientId(keycloakProperties.getClientId());
         tokenDto.setClientSecret(keycloakProperties.getClientSecret());
         tokenDto.setGrantType("password");
-        this.mockMvc.perform(post("/api/token").param(tokenDto.getUsername()))
+        this.mockMvc.perform(post( "/api/token").param(tokenDto.getUsername()))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("access_token").isNotEmpty());
     }
 
-    @Test
-    void create() {
-    }
 }
