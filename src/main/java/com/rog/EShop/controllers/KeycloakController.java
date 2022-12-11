@@ -46,4 +46,5 @@ public class KeycloakController {
                 .retrieve()
                 .bodyToMono(String.class);
     }
+
 }

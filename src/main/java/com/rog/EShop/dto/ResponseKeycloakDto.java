@@ -1,6 +1,8 @@
 package com.rog.EShop.dto;
 
-import java.time.OffsetDateTime;
+import com.rog.EShop.entity.Role;
+
+import java.util.List;
 import java.util.UUID;
 
 public class ResponseKeycloakDto {
@@ -9,6 +11,15 @@ public class ResponseKeycloakDto {
     private String username;
     private String firstName;
     private String lastName;
+    private List<Role> realmRoles;
+
+    public List<Role> getRealmRoles() {
+        return realmRoles;
+    }
+
+    public void setRealmRoles(List<Role> realmRoles) {
+        this.realmRoles = realmRoles;
+    }
 
     public UUID getId() {
         return id;

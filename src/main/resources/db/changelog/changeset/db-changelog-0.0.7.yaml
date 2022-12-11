@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.7
+      author: KonstiantynRog
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role
+                  type: varchar(50)

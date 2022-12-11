@@ -10,6 +10,15 @@ public class KeycloakProperties {
     private String host;
     private String clientId;
     private String clientSecret;
+    private String realm;
+
+    public String getRealm() {
+        return realm;
+    }
+
+    public void setRealm(String realm) {
+        this.realm = realm;
+    }
 
     public String getHost() {
         return host;
