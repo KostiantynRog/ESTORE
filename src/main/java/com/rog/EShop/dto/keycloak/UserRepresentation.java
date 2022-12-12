@@ -1,18 +1,40 @@
-package com.rog.EShop.dto;
+package com.rog.EShop.dto.keycloak;
 
+import com.rog.EShop.dto.Credential;
 import com.rog.EShop.entity.Role;
 
 import java.util.List;
+import java.util.UUID;
 
-public class KeycloakUserDto {
+public class UserRepresentation {
+    private UUID id;
+    private Long createdTimestamp;
+    private String username;
     private String firstName;
     private String lastName;
-    private String username;
+    private List<Role> realmRoles;
+
     private String email;
     private Boolean emailVerified;
     private Boolean enabled;
-    private List<Role> realmRoles;
+
     private List<Credential> credentials;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Long getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(Long createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
+    }
 
     public List<Role> getRealmRoles() {
         return realmRoles;

@@ -13,14 +13,14 @@ public class UserDto {
     private String lastName;
     private Date registerDate;
 
-    private List<Role> authorities;
+    private List<String> roles;
 
-    public List<Role> getAuthorities() {
-        return authorities;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setAuthorities(List<Role> authorities) {
-        this.authorities = authorities;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {

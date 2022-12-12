@@ -1,6 +1,6 @@
-package com.rog.EShop.dto;
+package com.rog.EShop.dto.keycloak;
 
-public class ResponseUserRoleDto {
+public class RoleRepresentation {
     private String id;
     private String name;
     private String description;

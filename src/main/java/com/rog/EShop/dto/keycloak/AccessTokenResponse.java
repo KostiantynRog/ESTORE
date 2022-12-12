@@ -1,8 +1,8 @@
-package com.rog.EShop.dto;
+package com.rog.EShop.dto.keycloak;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ResponseTokenDto {
+public class AccessTokenResponse {
     @JsonProperty("access_token")
     private String accessToken;
     @JsonProperty("expires_in")

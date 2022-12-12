@@ -1,6 +1,5 @@
 package com.rog.EShop.controllers;
 
-import com.rog.EShop.dto.KeycloakUserDto;
 import com.rog.EShop.dto.UserDto;
 import com.rog.EShop.dto.UserRegisterDto;
 import com.rog.EShop.services.UserService;

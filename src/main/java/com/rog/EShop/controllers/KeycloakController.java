@@ -1,8 +1,8 @@
 package com.rog.EShop.controllers;
 
-import com.rog.EShop.dto.KeycloakUserDto;
-import com.rog.EShop.dto.ResponseTokenDto;
 import com.rog.EShop.dto.TokenDto;
+import com.rog.EShop.dto.keycloak.AccessTokenResponse;
+import com.rog.EShop.dto.keycloak.UserRepresentation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,7 +18,7 @@ public class KeycloakController {
     private final WebClient webClient = WebClient.create("http://localhost:8080");
 
     @PostMapping("/token")
-    public Mono<ResponseTokenDto> getToken(@RequestBody TokenDto tokenDto) {
+    public Mono<AccessTokenResponse> getToken(@RequestBody TokenDto tokenDto) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("username", tokenDto.getUsername());
         formData.add("password", tokenDto.getPassword());
@@ -31,18 +31,18 @@ public class KeycloakController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .body(BodyInserters.fromFormData(formData))
                 .retrieve()
-                .bodyToMono(ResponseTokenDto.class);
+                .bodyToMono(AccessTokenResponse.class);
     }
 
     @PostMapping("/keycloak_user")
     public Mono<String> create(@RequestHeader MultiValueMap<String, String> headers,
-                               @RequestBody KeycloakUserDto keycloakUserDto) {
+                               @RequestBody UserRepresentation userRepresentation) {
 
         return webClient.post()
                 .uri("/admin/realms/ESTORE/users")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, headers.getFirst(HttpHeaders.AUTHORIZATION.toLowerCase()))
-                .body(Mono.just(keycloakUserDto), KeycloakUserDto.class)
+                .body(Mono.just(userRepresentation), UserRepresentation.class)
                 .retrieve()
                 .bodyToMono(String.class);
     }
