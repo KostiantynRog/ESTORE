@@ -20,7 +20,7 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          jwk-set-uri: ${KEYCLOAK_REALM_CERT_URL:http://localhost:8080/realms/ESTORE/protocol/openid-connect/certs}
+          jwk-set-uri: ${KEYCLOAK_HOST:http://localhost:8080}/realms/${KEYCLOAK_REALM:ESTORE}/protocol/openid-connect/certs
 keycloak:
   host: ${KEYCLOAK_HOST:http://localhost:8080}
   client-id: ${KEYCLOAK_CLIENT_ID:estore-api}

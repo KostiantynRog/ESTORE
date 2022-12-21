@@ -9,3 +9,41 @@ databaseChangeLog:
               - column:
                   name: keycloak_id
                   type: UUID
+
+
+        - dropColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: account_non_expired
+              - column:
+                  name: account_non_locked
+              - column:
+                  name: credentials_non_expired
+              - column:
+                  name: enabled
+              - column:
+                  name: password
+
+        - dropTable:
+            cascadeConstraints: true
+            tableName: users_roles
+
+        - addColumn:
+            tableName: USERS
+            columns:
+              - column:
+                  name: email
+                  type: varchar(70)
+                  defaultValue: ''
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 0.0.4.1
+      author: KonstiantynRog
+      changes:
+        - sql:
+            sql: UPDATE users set email = 'admin@example.com' where username = 'admin';
+        - sql:
+            sql: UPDATE users set email = 'user@example.com' where username = 'user';

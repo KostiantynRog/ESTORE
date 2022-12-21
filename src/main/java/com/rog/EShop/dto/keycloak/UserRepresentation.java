@@ -1,7 +1,6 @@
 package com.rog.EShop.dto.keycloak;
 
 import com.rog.EShop.dto.Credential;
-import com.rog.EShop.entity.Role;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +11,7 @@ public class UserRepresentation {
     private String username;
     private String firstName;
     private String lastName;
-    private List<Role> realmRoles;
+    List<String> realmRoles;
 
     private String email;
     private Boolean emailVerified;
@@ -36,11 +35,11 @@ public class UserRepresentation {
         this.createdTimestamp = createdTimestamp;
     }
 
-    public List<Role> getRealmRoles() {
+    public List<String> getRealmRoles() {
         return realmRoles;
     }
 
-    public void setRealmRoles(List<Role> realmRoles) {
+    public void setRealmRoles(List<String> realmRoles) {
         this.realmRoles = realmRoles;
     }
 

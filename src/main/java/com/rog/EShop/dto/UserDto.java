@@ -1,12 +1,12 @@
 package com.rog.EShop.dto;
 
-import com.rog.EShop.entity.Role;
-
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class UserDto {
     private Long id;
+    private UUID keycloakId;
     private String username;
     private String email;
     private String firstName;
@@ -14,6 +14,14 @@ public class UserDto {
     private Date registerDate;
 
     private List<String> roles;
+
+    public UUID getKeycloakId() {
+        return keycloakId;
+    }
+
+    public void setKeycloakId(UUID keycloakId) {
+        this.keycloakId = keycloakId;
+    }
 
     public List<String> getRoles() {
         return roles;
