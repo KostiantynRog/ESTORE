@@ -37,7 +37,7 @@ public class KeycloakController {
         formData.add("grant_type", tokenDto.getGrantType());
 
         return webClient.post()
-                .uri("/realms/keycloakProperties.getRealm()/protocol/openid-connect/token")
+                .uri("/realms/" + keycloakProperties.getRealm() + "/protocol/openid-connect/token")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .body(BodyInserters.fromFormData(formData))
                 .retrieve()
@@ -49,7 +49,7 @@ public class KeycloakController {
                                @RequestBody UserRepresentation userRepresentation) {
 
         return webClient.post()
-                .uri("/admin/realms/keycloakProperties.getRealm()/users")
+                .uri("/admin/realms/" + keycloakProperties.getRealm() + "/users")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, headers.getFirst(HttpHeaders.AUTHORIZATION.toLowerCase()))
                 .body(Mono.just(userRepresentation), UserRepresentation.class)

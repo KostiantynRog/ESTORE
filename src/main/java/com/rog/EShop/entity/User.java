@@ -2,7 +2,6 @@ package com.rog.EShop.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,16 +18,7 @@ public class User {
     private String firstName;
     private String lastName;
     private LocalDateTime registerDate;
-    @Transient
-    private List<Role> roles;
 
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 
     public void setRegisterDate(LocalDateTime registerDate) {
         this.registerDate = registerDate;

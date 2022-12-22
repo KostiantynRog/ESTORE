@@ -11,7 +11,7 @@ public class UserRepresentation {
     private String username;
     private String firstName;
     private String lastName;
-    List<String> realmRoles;
+    private List<String> realmRoles;
 
     private String email;
     private Boolean emailVerified;
