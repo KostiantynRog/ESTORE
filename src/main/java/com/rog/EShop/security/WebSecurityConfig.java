@@ -1,12 +1,12 @@
 package com.rog.EShop.security;
 
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .antMatchers("/api/token", "/api/users/register").permitAll()
+                        .requestMatchers("/api/token", "/api/users/register").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(resourceServerConfigurer -> resourceServerConfigurer
                         .jwt(jwtConfigurer -> jwtConfigurer
@@ -39,6 +39,7 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
     @Bean
     public Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter() {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
@@ -62,12 +63,12 @@ public class WebSecurityConfig {
                 if (realmAccess.get("roles") == null) {
                     return grantedAuthorities;
                 }
-                JSONArray roles = (JSONArray) realmAccess.get("roles");
+                JSONArray roles = null;
+                roles = (JSONArray) realmAccess.get("roles");
 
                 final List<SimpleGrantedAuthority> keycloakAuthorities = roles
                         .stream()
-                        .map(role -> new SimpleGrantedAuthority("" + role))
-                        .collect(Collectors.toList());
+                        .map(role -> new SimpleGrantedAuthority("" + role)).toList();
                 grantedAuthorities.addAll(keycloakAuthorities);
 
                 return grantedAuthorities;
