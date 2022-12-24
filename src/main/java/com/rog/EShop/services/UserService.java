@@ -2,40 +2,45 @@ package com.rog.EShop.services;
 
 import com.rog.EShop.dto.UserDto;
 import com.rog.EShop.dto.UserRegisterDto;
-import com.rog.EShop.entity.Role;
+import com.rog.EShop.dto.keycloak.UserRepresentation;
 import com.rog.EShop.entity.User;
 import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.exceptions.ConflictException;
 import com.rog.EShop.exceptions.NotFoundException;
 import com.rog.EShop.mapper.UserMapper;
 import com.rog.EShop.repository.UserRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final KeycloakService keycloakService;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+
+    public UserService(UserRepository userRepository, UserMapper userMapper, KeycloakService keycloakService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.keycloakService = keycloakService;
     }
+
 
     public UserDto findById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found"));
 
-        return userMapper.toDTO(user);
+        UserDto userDto = userMapper.toDTO(user);
+        String accessToken = keycloakService.getAccessToken();
+        if (user.getKeycloakId() != null) {
+            userDto.setRoles(keycloakService.getUserRoles(user.getKeycloakId().toString(), accessToken));
+        }
+        return userDto;
     }
 
     public UserDto save(UserRegisterDto userRegisterDto) {
@@ -44,29 +49,27 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsUserByUsername(user.getUsername())) {
             throw new ConflictException("This username already exists!");
         }
-
         if (!Objects.equals(userRegisterDto.getPassword(), userRegisterDto.getConfirmPassword())) {
             throw new BadRequestException("Password does not match!");
         }
-        String encode = bCryptPasswordEncoder.encode(userRegisterDto.getPassword());
-        user.setPassword(encode);
-        user.setRegisterDate(LocalDateTime.now());
-        user.setAccountNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setCredentialsNonExpired(true);
-        user.setEnabled(true);
-        user.setAuthorities(List.of(Role.ROLE_USER));
-        User userSaved = userRepository.save(user);
-        return userMapper.toDTO(userSaved);
 
+        String accessToken = keycloakService.getAccessToken();
+        ResponseEntity<String> response = keycloakService.createUser(userRegisterDto, accessToken);
+        if (response.getStatusCode().isError()) {
+            throw new RuntimeException("Error " + response.getStatusCode());
+        }
 
-    }
+        UserRepresentation userRepresentation = keycloakService.getUserByUsername(user.getUsername(), accessToken)
+                .getBody().get(0);
+        user.setKeycloakId(userRepresentation.getId());
+        user.setRegisterDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(userRepresentation.getCreatedTimestamp()),
+                ZoneOffset.UTC));
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("The user " + username + " does not exist"));
-
+        userRepository.save(user);
+        UserDto userDto = userMapper.toDTO(user);
+        userDto.setRoles(keycloakService.getUserRoles(user.getKeycloakId().toString(),
+                accessToken));
+        return userDto;
 
     }
 }
