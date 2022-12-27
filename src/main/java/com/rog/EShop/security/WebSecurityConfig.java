@@ -1,7 +1,7 @@
 package com.rog.EShop.security;
 
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -18,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
