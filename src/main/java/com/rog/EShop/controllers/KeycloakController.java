@@ -1,9 +1,9 @@
 package com.rog.EShop.controllers;
 
 import com.rog.EShop.dto.TokenDto;
-import com.rog.EShop.dto.keycloak.AccessTokenResponse;
-import com.rog.EShop.dto.keycloak.UserRepresentation;
-import com.rog.EShop.properties.KeycloakProperties;
+import com.rog.EShop.properties.ApplicationProperties;
+import org.keycloak.representations.AccessTokenResponse;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -17,14 +17,13 @@ import reactor.core.publisher.Mono;
 @RequestMapping(path = "/api")
 public class KeycloakController {
 
-    private final KeycloakProperties keycloakProperties;
+    private final ApplicationProperties applicationProperties;
     private final WebClient webClient;
 
-    public KeycloakController(KeycloakProperties keycloakProperties) {
-        this.keycloakProperties = keycloakProperties;
-        webClient = WebClient.create(keycloakProperties.getHost());
+    public KeycloakController(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
+        webClient = WebClient.create(applicationProperties.getKeycloak().getBaseUrl());
     }
-
 
 
     @PostMapping("/token")
@@ -37,7 +36,7 @@ public class KeycloakController {
         formData.add("grant_type", tokenDto.getGrantType());
 
         return webClient.post()
-                .uri("/realms/" + keycloakProperties.getRealm() + "/protocol/openid-connect/token")
+                .uri("/realms/" + applicationProperties.getKeycloak().getRealm() + "/protocol/openid-connect/token")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .body(BodyInserters.fromFormData(formData))
                 .retrieve()
@@ -49,7 +48,7 @@ public class KeycloakController {
                                @RequestBody UserRepresentation userRepresentation) {
 
         return webClient.post()
-                .uri("/admin/realms/" + keycloakProperties.getRealm() + "/users")
+                .uri("/admin/realms/" + applicationProperties.getKeycloak().getRealm() + "/users")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, headers.getFirst(HttpHeaders.AUTHORIZATION.toLowerCase()))
                 .body(Mono.just(userRepresentation), UserRepresentation.class)

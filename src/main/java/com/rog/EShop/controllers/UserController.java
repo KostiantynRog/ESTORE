@@ -2,7 +2,6 @@ package com.rog.EShop.controllers;
 
 import com.rog.EShop.dto.UserDto;
 import com.rog.EShop.dto.UserRegisterDto;
-import com.rog.EShop.services.KeycloakService;
 import com.rog.EShop.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
