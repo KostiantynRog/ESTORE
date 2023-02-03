@@ -17,13 +17,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -101,6 +98,12 @@ public class KeycloakServiceImpl implements KeycloakService {
 
         return userRepresentation2;
     }
+
+    @Override
+    public UserRepresentation getUserById(String id) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     @Override
     public UserRepresentation getUserByUsername(String username) {
         RestTemplate restTemplate = new RestTemplate();

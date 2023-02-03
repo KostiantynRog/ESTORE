@@ -3,7 +3,6 @@ package com.rog.EShop.controllers;
 import com.rog.EShop.dto.TokenDto;
 import com.rog.EShop.properties.ApplicationProperties;
 import org.keycloak.representations.AccessTokenResponse;
-import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,7 +12,9 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+
 @RestController
+@Deprecated
 @RequestMapping(path = "/api")
 public class KeycloakController {
 
@@ -43,17 +44,6 @@ public class KeycloakController {
                 .bodyToMono(AccessTokenResponse.class);
     }
 
-    @PostMapping("/keycloak_user")
-    public Mono<String> create(@RequestHeader MultiValueMap<String, String> headers,
-                               @RequestBody UserRepresentation userRepresentation) {
 
-        return webClient.post()
-                .uri("/admin/realms/" + applicationProperties.getKeycloak().getRealm() + "/users")
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, headers.getFirst(HttpHeaders.AUTHORIZATION.toLowerCase()))
-                .body(Mono.just(userRepresentation), UserRepresentation.class)
-                .retrieve()
-                .bodyToMono(String.class);
-    }
 
 }

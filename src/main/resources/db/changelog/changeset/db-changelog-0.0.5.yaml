@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.5
+      author: KonstiantynRog
+      changes:
+        -  dropTable:
+             tableName: users
+

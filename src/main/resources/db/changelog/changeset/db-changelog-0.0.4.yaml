@@ -47,3 +47,4 @@ databaseChangeLog:
             sql: UPDATE users set email = 'admin@example.com' where username = 'admin';
         - sql:
             sql: UPDATE users set email = 'user@example.com' where username = 'user';
+
