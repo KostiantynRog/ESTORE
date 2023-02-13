@@ -1,6 +1,7 @@
 package com.rog.EShop.services;
 
 import com.rog.EShop.dto.UserRegisterDto;
+import com.rog.EShop.entity.Role;
 import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.exceptions.ConflictException;
 import com.rog.EShop.exceptions.NotFoundException;
@@ -71,6 +72,14 @@ public class KeycloakMavenLibrariesServiceImpl implements KeycloakService {
                 .collect(Collectors.toList());
     }
 
+    private void addRoleToUser(String id, List<RoleRepresentation> roles) {
+        getUsersResource()
+                .get(id)
+                .roles()
+                .realmLevel()
+                .add(roles);
+    }
+
     @Override
     public UserRepresentation createUser(UserRegisterDto userRegisterDto) {
         UserRepresentation user = new UserRepresentation();
@@ -99,7 +108,20 @@ public class KeycloakMavenLibrariesServiceImpl implements KeycloakService {
         }
         String userUuid = path.substring(path.lastIndexOf('/') + 1);
         user.setId(userUuid);
+
+        RoleRepresentation roleRepresentation = getRoleRepresentationByName(Role.ROLE_USER.toString());
+        addRoleToUser(userUuid, List.of(roleRepresentation));
+        user.setCreatedTimestamp(getUserById(userUuid).getCreatedTimestamp());
         return user;
+    }
+
+    private RoleRepresentation getRoleRepresentationByName(String roleName) {
+        RoleRepresentation roleRepresentation = keycloakClientFactory.getInstance()
+                .realm(applicationProperties.getKeycloak().getRealm())
+                .roles()
+                .get(roleName)
+                .toRepresentation();
+        return roleRepresentation;
     }
 
     private UsersResource getUsersResource() {
@@ -115,4 +137,5 @@ public class KeycloakMavenLibrariesServiceImpl implements KeycloakService {
                 .toRepresentation();
         return userRepresentation;
     }
+
 }

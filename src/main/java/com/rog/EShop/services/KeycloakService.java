@@ -11,6 +11,5 @@ public interface KeycloakService {
      UserRepresentation getUserByUsername(String userName);
      List<String> getUserRoles(String userId);
      UserRepresentation createUser(UserRegisterDto userRegisterDto);
-
      UserRepresentation getUserById(String id);
 }
