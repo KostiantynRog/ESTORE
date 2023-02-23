@@ -1,27 +1,19 @@
 package com.rog.EShop.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 public class UserDto {
-    private Long id;
-    private UUID keycloakId;
+    private String id;
     private String username;
     private String email;
     private String firstName;
     private String lastName;
-    private Date registerDate;
+    private LocalDateTime registerDate;
 
     private List<String> roles;
 
-    public UUID getKeycloakId() {
-        return keycloakId;
-    }
 
-    public void setKeycloakId(UUID keycloakId) {
-        this.keycloakId = keycloakId;
-    }
 
     public List<String> getRoles() {
         return roles;
@@ -31,11 +23,11 @@ public class UserDto {
         this.roles = roles;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -71,13 +63,11 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public Date getRegisterDate() {
+    public LocalDateTime getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(LocalDateTime registerDate) {
         this.registerDate = registerDate;
     }
-
-
 }

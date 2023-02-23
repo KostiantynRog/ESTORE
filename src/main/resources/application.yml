@@ -18,13 +18,15 @@ spring:
     driver-class-name: org.postgresql.Driver
   security:
     oauth2:
-      resource-server:
+      resourceserver:
         jwt:
-          jwk-set-uri: ${KEYCLOAK_HOST:http://localhost:8080}/realms/${KEYCLOAK_REALM:ESTORE}/protocol/openid-connect/certs
-keycloak:
-  host: ${KEYCLOAK_HOST:http://localhost:8080}
-  client-id: ${KEYCLOAK_CLIENT_ID:estore-api}
-  client-secret: ${KEYCLOAK_CLIENT_SECRET:2iwoTq3NgMMj0CRHIjzWbZ7GRLj5mLEk}
-  realm: ${KEYCLOAK_REALM:ESTORE}
+          jwk-set-uri: ${KEYCLOAK_BASE_URL:http://localhost:8080}/realms/${KEYCLOAK_REALM:ESTORE}/protocol/openid-connect/certs
+
+application:
+  keycloak:
+    realm: ${KEYCLOAK_REALM:ESTORE}
+    baseUrl: ${KEYCLOAK_BASE_URL:http://localhost:8080}
+    clientId: ${KEYCLOAK_CLIENT_ID:estore-api}
+    clientSecret: ${KEYCLOAK_CLIENT_SECRET}
 
 
