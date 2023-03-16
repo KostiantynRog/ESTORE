@@ -1,6 +1,8 @@
 package com.rog.EShop.entity;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +19,7 @@ public class Item {
     private String imageSrc;
     @ManyToOne
     private Category category;
+    private BigDecimal price;
 
     public Integer getId() {
         return id;
@@ -64,6 +67,14 @@ public class Item {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override
