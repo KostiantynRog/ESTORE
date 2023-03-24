@@ -2,7 +2,6 @@ package com.rog.EShop.controllers;
 
 import com.rog.EShop.dto.ItemDto;
 import com.rog.EShop.exceptions.BadRequestException;
-import com.rog.EShop.services.ItemExportService;
 import com.rog.EShop.services.ItemService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -23,12 +22,9 @@ public class ItemController {
     private final Logger log = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
 
-    private final ItemExportService itemExportService;
 
-
-    public ItemController(ItemService itemService, ItemExportService itemExportService) {
+    public ItemController(ItemService itemService) {
         this.itemService = itemService;
-        this.itemExportService = itemExportService;
     }
 
     @GetMapping(path = "/items/{id}")
@@ -84,6 +80,6 @@ public class ItemController {
     public void getAllItemsInCsv(HttpServletResponse servletResponse) throws IOException {
         servletResponse.setContentType("text/csv");
         servletResponse.addHeader("Content-Disposition","attachment; filename=\"items.csv\"");
-        itemExportService.exportCSV(servletResponse.getWriter());
+        itemService.exportCSV(servletResponse.getWriter());
 }
 }

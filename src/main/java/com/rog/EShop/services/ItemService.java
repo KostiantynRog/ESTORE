@@ -5,12 +5,16 @@ import com.rog.EShop.entity.Item;
 import com.rog.EShop.exceptions.NotFoundException;
 import com.rog.EShop.mapper.ItemMapper;
 import com.rog.EShop.repository.ItemRepository;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 @Service
@@ -70,5 +74,17 @@ public class ItemService {
     public List<ItemDto> findByName(String filter) {
         List<Item> items = itemRepository.findByNameContainingIgnoreCase(filter);
         return itemMapper.toEntity(items);
+    }
+    public void exportCSV(Writer writer) {
+        List<Item> items = itemRepository.findAll();
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.POSTGRESQL_CSV)) {
+            csvPrinter.printRecord("Id", "Name", "Category Id", "Short description", "Price");
+            for (Item item : items) {
+                csvPrinter.printRecord(item.getId(), item.getName(), item.getCategory().getId(),
+                        item.getShortDescription(), item.getPrice());
+            }
+        } catch (IOException e) {
+            System.out.println("DB error");
+        }
     }
 }

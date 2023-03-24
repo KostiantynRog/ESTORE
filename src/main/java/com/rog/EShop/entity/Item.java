@@ -13,7 +13,6 @@ public class Item {
     @SequenceGenerator(name = "items_id_generator", sequenceName = "items_id_seq", allocationSize = 1)
     private Integer id;
     private String name;
-
     private String shortDescription;
     private String fullDescription;
     private String imageSrc;
