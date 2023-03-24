@@ -5,4 +5,13 @@ databaseChangeLog:
       changes:
         -  dropTable:
              tableName: users
-
+  - changeSet:
+      id: 0.0.5.1
+      author: KostiantynRog
+      changes:
+        - addColumn:
+            tableName: ITEMS
+            columns:
+              - column:
+                  name: price
+                  type: DECIMAL

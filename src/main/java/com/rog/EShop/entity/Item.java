@@ -1,6 +1,8 @@
 package com.rog.EShop.entity;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -11,12 +13,12 @@ public class Item {
     @SequenceGenerator(name = "items_id_generator", sequenceName = "items_id_seq", allocationSize = 1)
     private Integer id;
     private String name;
-
     private String shortDescription;
     private String fullDescription;
     private String imageSrc;
     @ManyToOne
     private Category category;
+    private BigDecimal price;
 
     public Integer getId() {
         return id;
@@ -64,6 +66,14 @@ public class Item {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override
