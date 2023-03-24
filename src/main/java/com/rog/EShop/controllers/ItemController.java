@@ -4,6 +4,7 @@ import com.rog.EShop.dto.ItemDto;
 import com.rog.EShop.exceptions.BadRequestException;
 import com.rog.EShop.services.ItemExportService;
 import com.rog.EShop.services.ItemService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -77,8 +79,11 @@ public class ItemController {
         itemService.delete(id);
     }
 
+
     @GetMapping(path = "/items/export")
-    public void export() {
-        itemExportService.exportCSV();
-    }
+    public void getAllItemsInCsv(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition","attachment; filename=\"items.csv\"");
+        itemExportService.exportCSV(servletResponse.getWriter());
+}
 }
