@@ -64,7 +64,6 @@ public class UserService {
 
     public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("kotrog719@gmail.com");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
