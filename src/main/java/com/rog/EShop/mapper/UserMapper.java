@@ -1,6 +1,7 @@
 package com.rog.EShop.mapper;
 
 import com.rog.EShop.dto.UserDto;
+import com.rog.EShop.entity.UserActivation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

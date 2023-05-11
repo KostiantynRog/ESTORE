@@ -21,6 +21,16 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${KEYCLOAK_BASE_URL:http://localhost:8080}/realms/${KEYCLOAK_REALM:ESTORE}/protocol/openid-connect/certs
+  mail:
+    host: smtp.gmail.com
+    username: kotrog719@gmail.com
+    password: Danit2019
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: enable
 
 application:
   keycloak:
