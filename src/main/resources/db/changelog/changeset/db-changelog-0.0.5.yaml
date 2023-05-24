@@ -15,3 +15,29 @@ databaseChangeLog:
               - column:
                   name: price
                   type: DECIMAL
+  - changeSet:
+      id: 0.0.5.2
+      author: KostiantynRog
+      changes:
+        - createSequence:
+            sequenceName: user_activation_id_seq
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: USER_ACTIVATION
+            columns:
+              - column:
+                  name: user_id
+                  type: varchar(60)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: activation_token
+                  type: varchar(64)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: token_expiry_date
+                  type: timestamp
+                  constraints:
+                    nullable: true
